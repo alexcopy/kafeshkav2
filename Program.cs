@@ -1,7 +1,13 @@
+using KafeshkaV2.BL.implementations;
+using KafeshkaV2.BL.interfaces;
+using KafeshkaV2.DAL.implementations;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<IUserBL, UserBL>();
+builder.Services.AddSingleton<IUserDAL, IUserDAL>();
 
 var app = builder.Build();
 
