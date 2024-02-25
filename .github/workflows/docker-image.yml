@@ -1,0 +1,41 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches:
+      - main  # or the default branch of your repository
+  pull_request:
+    branches:
+      - main  # or the default branch of your repository
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    env:
+      DOCKER_USERNAME: redcopy
+      
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Log in to Docker registry
+        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+      - name: Build Docker image
+        run: docker build . --file Dockerfile --tag redcopy/kafeshkav2:latest
+
+      - name: Push Docker image to Docker Hub
+        run: docker push redcopy/kafeshkav2:latest
+
+      - name: Fetch project details
+        id: project-details
+        run: echo "::set-output name=project-name::KafeshkaV2"
+
+      - name: Send Slack notification
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{
+            "text": "✨🚀 *Urgent !! \nNotification for Project:* ${{ steps.project-details.outputs.project-name }}\n*Build Status:* Docker Build Successful! 🎉🔥"
+          }' $SLACK_WEBHOOK_URL
+
