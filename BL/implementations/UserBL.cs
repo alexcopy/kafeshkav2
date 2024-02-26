@@ -1,17 +1,18 @@
 using KafeshkaV2.BL.interfaces;
 using KafeshkaV2.DAL.implementations;
+using KafeshkaV2.DAL.interfaces;
 using KafeshkaV2.DAL.Model;
 
 namespace KafeshkaV2.BL.implementations;
 
-public class UserBL:IUserBL
-{
-    private readonly UserDal _userDal;
-
-    public UserBL(UserDal userDal)
+   public class UserBL : IUserBL
     {
-        this._userDal = userDal;
-    }
+        private readonly IUserDal _userDal;
+
+        public UserBL(IUserDal userDal)
+        {
+            _userDal = userDal;
+        }
 
     public int? Authenticate(string email, string password)
     {
@@ -31,7 +32,7 @@ public class UserBL:IUserBL
     {
         return _userDal.FindById(userId);
     }
-
+ 
     public string Encrypt(string password)
     {
         return password;
