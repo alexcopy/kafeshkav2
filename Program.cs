@@ -10,10 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.json");
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
-builder.Services.AddSingleton<IDatabaseConnectionFactory, DatabaseConnectionFactory>();
-builder.Services.AddControllersWithViews();
-builder.Services.AddSingleton<IUserBL, UserBL>();
-builder.Services.AddSingleton<IUserDal, UserDal>();
+
+builder.Services.AddScoped<IUserBL, UserBL>();
+builder.Services.AddScoped<IUserDal, UserDal>();
+ 
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

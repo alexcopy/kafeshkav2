@@ -7,26 +7,22 @@ using MySql.Data.MySqlClient;
 namespace KafeshkaV2.DAL.implementations;
 public class UserDal : IUserDal
 {
-    private readonly IDatabaseConnectionFactory _databaseConnectionFactory;
+    private readonly AppDbContext _dbContext;
 
-    public UserDal(IDatabaseConnectionFactory databaseConnectionFactory)
+    public UserDal(AppDbContext dbContext)
     {
-        _databaseConnectionFactory = databaseConnectionFactory;
+        _dbContext = dbContext;
     }
 
     public IEnumerable<User> FindByEmail(string email)
     {
-        using (var connection = _databaseConnectionFactory.CreateConnection())
-        {
-            return connection.Query<User>("SELECT * FROM `User` WHERE email = @Email", new { Email = email });
-        }
+        // Используйте EF Core для выполнения запросов
+        return _dbContext.User.Where(u => u.email == email).ToList();
     }
 
     public User FindById(int id)
     {
-        using (var connection = _databaseConnectionFactory.CreateConnection())
-        {
-            return connection.Query<User>("SELECT * FROM `User` WHERE UserId = @Id", new { Id = id }).FirstOrDefault();
-        }
+        // Используйте EF Core для выполнения запросов
+        return _dbContext.User.FirstOrDefault(u => u.UserId == id);
     }
 }
