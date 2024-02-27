@@ -1,23 +1,24 @@
 using KafeshkaV2.BL.interfaces;
 using KafeshkaV2.DAL.implementations;
+using KafeshkaV2.DAL.interfaces;
 using KafeshkaV2.DAL.Model;
 
 namespace KafeshkaV2.BL.implementations;
 
-public class UserBL:IUserBL
-{
-    private readonly IUserDAL userDal;
-
-    public UserBL(IUserDAL userDal)
+   public class UserBL : IUserBL
     {
-        this.userDal = userDal;
-    }
+        private readonly IUserDal _userDal;
+ 
+        public UserBL(IUserDal userDal)
+        {
+            _userDal = userDal;
+        }
 
     public int? Authenticate(string email, string password)
     {
         string encrypt = Encrypt(password);
         
-        foreach (User user in userDal.FindByEmail(email))
+        foreach (User user in _userDal.FindByEmail(email))
         {
             if (user.password == encrypt)
             {
@@ -29,9 +30,9 @@ public class UserBL:IUserBL
 
     public User GetUserById(int userId)
     {
-        return userDal.FindById(userId);
+        return _userDal.FindById(userId);
     }
-
+ 
     public string Encrypt(string password)
     {
         return password;
