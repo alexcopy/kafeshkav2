@@ -16,13 +16,13 @@ public class UserDal : IUserDal
 
     public IEnumerable<User> FindByEmail(string email)
     {
-        // Используйте EF Core для выполнения запросов
+        // Используем EF Core для выполнения запросов
         return _dbContext.User.Where(u => u.email == email).ToList();
     }
 
     public User FindById(int id)
     {
-        // Используйте EF Core для выполнения запросов
+        // Используем EF Core для выполнения запросов
         return _dbContext.User.FirstOrDefault(u => u.UserId == id);
     }
 }
