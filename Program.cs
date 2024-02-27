@@ -3,7 +3,6 @@ using KafeshkaV2.BL.implementations;
 using KafeshkaV2.BL.interfaces;
 using KafeshkaV2.DAL.implementations;
 using KafeshkaV2.DAL.interfaces;
-using KafeshkaV2.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

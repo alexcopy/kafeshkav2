@@ -1,8 +1,6 @@
 using Dapper;
 using KafeshkaV2.DAL.interfaces;
 using KafeshkaV2.DAL.Model;
-using KafeshkaV2.Infrastructure;
-using MySql.Data.MySqlClient;
 
 namespace KafeshkaV2.DAL.implementations;
 public class UserDal : IUserDal
