@@ -9,24 +9,20 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Configuration;
+using KafeshkaV2.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 string connectionString = "Server=localhost;Port=3386;Database=kafeshkav2;User ID=kafeshka;Password=test123;";
 
 
+builder.Services.AddSingleton<IDatabaseConnectionFactory, DatabaseConnectionFactory>();
+builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<IUserBL, UserBL>();
+builder.Services.AddSingleton<IUserDal, UserDal>();
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
-builder.Services.AddSingleton<IUserBL, UserBL>();
-builder.Services.AddSingleton<IUserDal, UserDal>(provider =>
-{
-    // Retrieve the connection string from your configuration or another source
-    string connectionString = "Server=localhost;Port=3386;Database=kafeshkav2;User ID=kafeshka;Password=test123;";
-    // Instantiate UserDal with the connection string
-    return new UserDal(connectionString);
-});
-
-
+ 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -8,7 +8,7 @@ namespace KafeshkaV2.BL.implementations;
    public class UserBL : IUserBL
     {
         private readonly IUserDal _userDal;
-
+ 
         public UserBL(IUserDal userDal)
         {
             _userDal = userDal;
