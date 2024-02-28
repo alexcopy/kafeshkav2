@@ -12,4 +12,5 @@ public class Dish : IDish
     public bool Vegetarian { get; set; }
     public bool Allergy { get; set; }
     public string Notes { get; set; } = string.Empty;
+    public ICollection<DishIngredient> DishIngredients { get; set; }
 }

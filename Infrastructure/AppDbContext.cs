@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 public class AppDbContext : DbContext
 {
     public DbSet<User> User { get; set; }
+    public DbSet<Ingredient> Ingredients { get; set; }
+    public DbSet<Dish> Dish { get; set; }
+    public DbSet<DishIngredient> DishIngredients { get; set; }
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
@@ -13,7 +16,7 @@ public class AppDbContext : DbContext
         optionsBuilder.UseMySql("Server=localhost;Port=3386;Database=kafeshkav2;User ID=kafeshka;Password=test123;",
             new MySqlServerVersion(new Version(11, 2, 2)));
     }
-    
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Configure the User entity
@@ -24,8 +27,17 @@ public class AppDbContext : DbContext
             .Property(u => u.email)
             .IsRequired();
 
-        // Add more configurations as needed
+        modelBuilder.Entity<DishIngredient>()
+            .HasKey(di => di.DishIngredientId);
 
-        // This is just a basic example, customize based on your requirements
+        modelBuilder.Entity<DishIngredient>()
+            .HasOne(di => di.Dish)
+            .WithMany(d => d.DishIngredients)
+            .HasForeignKey(di => di.DishId);
+
+        modelBuilder.Entity<DishIngredient>()
+            .HasOne(di => di.Ingredient)
+            .WithMany(i => i.DishIngredients)
+            .HasForeignKey(di => di.IngredientId);
     }
 }
