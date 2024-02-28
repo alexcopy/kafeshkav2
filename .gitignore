@@ -1,6 +1,6 @@
 # Rider files
 .idea/
-
+.DS_Store
 # User-specific files
 *.suo
 *.user
