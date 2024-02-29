@@ -6,6 +6,10 @@ namespace KafeshkaV2.DAL.interfaces;
     {
         DishIngredient GetById(int id);
         IEnumerable<DishIngredient> GetAll();
+        DishIngredient FindById(int id);
+        DishIngredient Create(DishIngredient dishIngredient);
+        void Update(DishIngredient dishIngredient);
+        void Delete(int id);
         
     }
  

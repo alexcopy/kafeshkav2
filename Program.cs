@@ -12,7 +12,9 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(connecti
 
 builder.Services.AddScoped<IUserBL, UserBL>();
 builder.Services.AddScoped<IUserDal, UserDal>();
- 
+builder.Services.AddScoped<IDishDal, DishDal>();
+builder.Services.AddScoped<IDishIngredientDal, DishIngredientDal>();
+builder.Services.AddScoped<IIngredientDal, IngredientDal>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -31,9 +33,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
 app.UseAuthorization();
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

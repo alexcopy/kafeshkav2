@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using KafeshkaV2.DAL.implementations;
 using KafeshkaV2.DAL.interfaces;
 using KafeshkaV2.DAL.Model;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +15,7 @@ public class DishController : ControllerBase
 
     public DishController(IDishDal dishDal)
     {
-        _dishDal = dishDal;
+        _dishDal = dishDal ?? throw new ArgumentNullException(nameof(dishDal));
     }
 
     [HttpGet]
@@ -24,7 +25,7 @@ public class DishController : ControllerBase
         return Ok(dishes);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public IActionResult GetById(int id)
     {
         var dish = _dishDal.GetById(id);
@@ -45,7 +46,7 @@ public class DishController : ControllerBase
             CreatedAtAction(nameof(GetById), new { id = createdDish.DishId }, createdDish);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public IActionResult Update(int id, [FromBody] Dish dish)
     {
         if (dish == null || id != dish.DishId)
@@ -59,7 +60,7 @@ public class DishController : ControllerBase
         return Ok(updatedDish);
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:int}")]
     public IActionResult Delete(int id)
     {
         var existingDish = _dishDal.GetById(id);
