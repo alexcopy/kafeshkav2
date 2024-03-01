@@ -1,0 +1,26 @@
+@model KafeshkaV2.DAL.Model.User
+
+@{
+    ViewBag.Title = "Current Users List in DB";
+    Layout = "_Layout";
+}
+
+<h2>Current Users List in DB</h2>
+@if (Model == null)
+{
+    <form method="post">
+    <div>
+        <label>e-mail</label>
+        <input name="email"/>
+    </div>
+    <div>
+        <label>password</label>
+        <input name="password"/>
+    </div>
+    <button>Submit</button>
+</form>
+}
+else
+{
+    @Model.FirstName  @Model.LastName
+}
