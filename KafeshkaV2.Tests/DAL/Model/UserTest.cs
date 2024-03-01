@@ -20,8 +20,8 @@ public class UserTest
             FirstName = "John",
             LastName = "Doe"
         };
-
-        // Act & Assert
+        
+ 
         Assert.Equal(1, user.UserId);
         Assert.Equal("test@example.com", user.email);
         Assert.Equal("securepassword", user.password);
