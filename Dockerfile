@@ -26,7 +26,7 @@ WORKDIR /app
 COPY --from=publish /app/publish . 
 ENV ASPNETCORE_ENVIRONMENT Production 
 # Указываем порт для API 
-EXPOSE 8080 
+EXPOSE 8087 
  
 # Запускаем приложение 
 ENTRYPOINT ["./KafeshkaV2"]
