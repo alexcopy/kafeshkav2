@@ -24,7 +24,7 @@ WORKDIR /app
  
 # Копируем файлы из папки publish в образ 
 COPY --from=publish /app/publish . 
- 
+ENV ASPNETCORE_ENVIRONMENT Production 
 # Указываем порт для API 
 EXPOSE 8080 
  
