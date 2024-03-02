@@ -31,11 +31,13 @@ jobs:
         id: project-details
         run: echo "::set-output name=project-name::KafeshkaV2"
 
-      - name: Send Slack notification
+      - name: 🚀 Notify Slack on Docker Build Success
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
         run: |
+          echo "Notifying Slack about Docker build success..."
           curl -X POST -H 'Content-type: application/json' --data '{
-            "text": "✨🚀 *Urgent !! \nNotification for Project:* ${{ steps.project-details.outputs.project-name }}\n*Build Status:* Docker Build Successful! 🎉🔥"
+            "text": "🌟🚀 *Urgent Notification!*\n\n🚧 *Project:* ${{ steps.project-details.outputs.project-name }}\n🛠️ *Build Status:* Docker Build Successful! 🎉🔥"
           }' $SLACK_WEBHOOK_URL
 
