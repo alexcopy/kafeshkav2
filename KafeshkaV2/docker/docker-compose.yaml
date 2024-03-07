@@ -24,7 +24,7 @@ services:
     extra_hosts:
       - kafeshka_db.loc:168.0.0.15
     environment:
-        - ASPNETCORE_ENVIRONMENT=Development
+        - ASPNETCORE_ENVIRONMENT=Production
     ports:
       - "8088:8080"
     networks:
