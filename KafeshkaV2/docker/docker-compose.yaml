@@ -16,9 +16,8 @@ services:
       kaf_net:
         ipv4_address: 168.0.0.15
 
-
   app:
-    image: kafeshkav2
+    image: redcopy/kafeshkav2:latest
     depends_on:
       kafeshka-db:
         condition: service_started
@@ -26,13 +25,11 @@ services:
       - kafeshka_db.loc:168.0.0.15
     environment:
         - ASPNETCORE_ENVIRONMENT=Development
-
     ports:
       - "8088:8080"
     networks:
       kaf_net:
         ipv4_address: 168.0.0.14
-
 
 networks:
   kaf_net:
