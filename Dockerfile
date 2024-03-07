@@ -10,6 +10,8 @@ COPY KafeshkaV2/KafeshkaV2.csproj .
 RUN dotnet restore
 
 COPY KafeshkaV2/. .
+RUN rm -f appsettings.json
+COPY KafeshkaV2/appsettings_docker.json appsettings.json
 RUN dotnet build -c Release
 
 # Публикация приложения
@@ -20,10 +22,10 @@ RUN dotnet publish -c Release -o /app/publish
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 
 WORKDIR /app
-RUN rm -f appsettings.json
+
 # Копируем файлы из папки publish в образ
 COPY --from=publish /app/publish .
-COPY KafeshkaV2/appsettings_docker.json appsettings.json
+
 
 
 ENV ASPNETCORE_ENVIRONMENT Production
