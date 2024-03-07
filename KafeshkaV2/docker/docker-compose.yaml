@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   kafeshkav2-db:
-    image: mysql:latest
+    image: redcopy/kafv2-mysql:latest
     container_name: kafeshkav2-db
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
