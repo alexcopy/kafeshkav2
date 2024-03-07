@@ -1,9 +1,9 @@
 version: '3.8'
 
 services:
-  kafeshka-db:
+  kafeshkav2-db:
     image: mysql:latest
-    container_name: kafeshka-db
+    container_name: kafeshkav2-db
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: kafeshkav2
@@ -19,7 +19,7 @@ services:
   app:
     image: redcopy/kafeshkav2:latest
     depends_on:
-      kafeshka-db:
+      kafeshkav2-db:
         condition: service_started
     extra_hosts:
       - kafeshka_db.loc:168.0.0.15
