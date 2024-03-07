@@ -1,9 +1,9 @@
 version: '3.8'
 
 services:
-  mysql:
+  kafeshka-db:
     image: mysql:latest
-    container_name: kafeshkav2-mysql
+    container_name: kafeshka-db
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: kafeshkav2
@@ -12,3 +12,35 @@ services:
     ports:
       - "3386:3306"
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    networks:
+      kaf_net:
+        ipv4_address: 168.0.0.15
+
+
+  app:
+    image: kafeshkav2
+    depends_on:
+      kafeshka-db:
+        condition: service_started
+    extra_hosts:
+      - kafeshka_db.loc:168.0.0.15
+    environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+
+    ports:
+      - "8088:8080"
+    networks:
+      kaf_net:
+        ipv4_address: 168.0.0.14
+
+
+networks:
+  kaf_net:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+    ipam:
+      driver: default
+      config:
+        - subnet: 168.0.0.0/15
+          gateway: 168.0.0.1

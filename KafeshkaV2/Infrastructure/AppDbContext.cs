@@ -10,12 +10,6 @@ public class AppDbContext : DbContext
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        // Configure your database connection here
-        optionsBuilder.UseMySql("Server=localhost;Port=3386;Database=kafeshkav2;User ID=kafeshka;Password=test123;",
-            new MySqlServerVersion(new Version(11, 2, 2)));
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
