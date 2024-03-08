@@ -22,9 +22,15 @@ jobs:
       - name: Run unit tests
         id: unit_tests
         run: dotnet test KafeshkaV2.Tests/KafeshkaV2.Tests.csproj || echo "##[set-output name=result;]Failure"
-
+    
       - name: Check if tests passed
-        run: exit ${{ steps.unit_tests.outputs.result != 'Failure' }}
+        run: |
+          if [ "${{ steps.unit_tests.outputs.result }}" == 'Failure' ]; then
+            echo "Tests failed. Exiting with a non-zero status code."
+            exit 1
+          else
+            echo "Tests passed. Continuing with the workflow."
+          fi
  
       - name: Build Docker image
         run: docker build . --file Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/kafeshkav2:latest
