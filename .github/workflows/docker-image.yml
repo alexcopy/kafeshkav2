@@ -20,8 +20,7 @@ jobs:
         run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
         env:
           DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
-        with:
-          DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+    
           
       - name: Run unit tests
         id: unit_tests
