@@ -49,7 +49,7 @@ jobs:
           STATUS: ${{ job.status }}
         run: |
           curl -X POST -H 'Content-type: application/json' --data '{
-            "text": "✨🚀 *Urgent !! \nNotification for Project:* KafeshkaV2\n*Build Status:* '${{ env.STATUS }}' 🎉🔥"
+            "text": "---------------------------\n\n✨🚀 *Urgent !! \nNotification for Project:* KafeshkaV2\n*Build Status:* '${{ env.STATUS }}' 🎉🔥"
           }' $SLACK_WEBHOOK_URL
 
       - name: Send Slack notification - Tests Failure
@@ -58,6 +58,6 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
           curl -X POST -H 'Content-type: application/json' --data '{
-            "text": "❌🔔 *Tests Failed!* \nProject: KafeshkaV2\n*Commit:* ${{ github.sha }}\n*Author:* ${{ github.actor }}"
+            "text": "---------------------------\n\n❌🔔 *Tests Failed!* \nProject: KafeshkaV2\n*Commit:* ${{ github.sha }}\n*Author:* ${{ github.actor }}"
           }' $SLACK_WEBHOOK_URL
 
