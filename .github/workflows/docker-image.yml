@@ -16,6 +16,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Run unit tests
+        id: unit_tests
+        run: dotnet test KafeshkaV2.Tests/KafeshkaV2.Tests.csproj || echo "##[set-output name=result;]Failure"
+
+      - name: Check if tests passed
+        run: exit ${{ steps.unit_tests.outputs.result != 'Failure' }}
+
       - name: Log in to Docker registry
         run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
@@ -29,11 +36,22 @@ jobs:
         id: project-details
         run: echo "::set-output name=project-name::KafeshkaV2"
 
-      - name: Send Slack notification
+      - name: Send Slack notification - Build Status
+        if: always()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          STATUS: ${{ job.status }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{
+            "text": "✨🚀 *Urgent !! \nNotification for Project:* YourProjectName\n*Build Status:* '${{ env.STATUS }}' 🎉🔥"
+          }' $SLACK_WEBHOOK_URL
+
+      - name: Send Slack notification - Tests Failure
+        if: failure()
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
           curl -X POST -H 'Content-type: application/json' --data '{
-            "text": "✨🚀 *Urgent !! \nNotification for Project:* ${{ steps.project-details.outputs.project-name }}\n*Build Status:* Docker Build Successful! 🎉🔥"
+            "text": "❌🔔 *Tests Failed!* \nProject: YourProjectName\n*Commit:* ${{ github.sha }}\n*Author:* ${{ github.actor }}"
           }' $SLACK_WEBHOOK_URL
 
