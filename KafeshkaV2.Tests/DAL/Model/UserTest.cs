@@ -22,7 +22,7 @@ public class UserTest
         };
         
  
-        Assert.Equal(1, 2);
+        Assert.Equal(1, user.UserId);
         Assert.Equal("test@example.com", user.email);
         Assert.Equal("securepassword", user.password);
         Assert.Equal("John", user.FirstName);
