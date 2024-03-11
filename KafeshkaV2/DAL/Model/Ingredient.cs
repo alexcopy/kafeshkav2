@@ -11,5 +11,5 @@ public class Ingredient : IIngredient
     public int Quantity { get; set; }
     public string? Notes { get; set; }
     // Навигационное свойство к DishIngredients
-    public ICollection<DishIngredient> DishIngredients { get; set; }
+    public ICollection<DishIngredient> DishIngredients { get; set; } = new List<DishIngredient>();
 }
