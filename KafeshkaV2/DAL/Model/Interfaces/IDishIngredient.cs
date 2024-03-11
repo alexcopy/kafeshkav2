@@ -6,5 +6,4 @@ public interface IDishIngredient
     int DishId { get; set; }
     int IngredientId { get; set; }
     int Quantity { get; }
-    void SetQuantity(int value);
 }

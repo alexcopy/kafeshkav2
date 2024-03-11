@@ -21,11 +21,6 @@ public class DishIngredient : IDishIngredient
         }
     }
 
-    public void SetQuantity(int value)
-    {
-        throw new NotImplementedException();
-    }
-
     // Overloaded set method
     public void SetDishIngredient(int dishId, int ingredientId, int quantity)
     {

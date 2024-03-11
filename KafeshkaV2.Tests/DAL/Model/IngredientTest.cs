@@ -95,6 +95,7 @@ public class DishIngredientTests
         // Assert
         Assert.Equal(0, dishIngredient.Quantity);
     }
+
     [Fact]
     public void DishIngredient_Default_Constructor_Should_Create_Object_With_Default_Values()
     {
@@ -105,5 +106,60 @@ public class DishIngredientTests
         Assert.Equal(0, dishIngredient.Quantity);
         Assert.NotNull(dishIngredient.Dish);
         Assert.NotNull(dishIngredient.Ingredient);
+    }
+
+    [Fact]
+    public void DishIngredients_Should_Be_Empty_After_Construction()
+    {
+        // Arrange
+        var dish = new Dish();
+        // Act
+        var dishIngredients = dish.DishIngredients;
+        // Assert
+        Assert.NotNull(dishIngredients);
+        Assert.Empty(dishIngredients);
+    }
+
+    [Fact]
+    public void AddDishIngredient_Should_Add_Element_To_DishIngredients()
+    {
+        // Arrange
+
+        var dish = new Dish();
+        var dishIngredient = new DishIngredient
+        {
+            Dish = dish,
+            Ingredient = new Ingredient()
+            {
+                Name = "Ingredient"
+            }
+        }; // Create a DishIngredient instance
+
+        // Act
+        dish.DishIngredients.Add(dishIngredient);
+
+        // Assert
+        Assert.Single(dish.DishIngredients);
+        Assert.Contains(dishIngredient, dish.DishIngredients);
+    }
+
+    [Fact]
+    public void RemoveDishIngredient_Should_Remove_Element_From_DishIngredients()
+    {
+        // Arrange
+        var dish = new Dish();
+        var dishIngredient = new DishIngredient
+        {
+            Dish = dish,
+            Ingredient = new Ingredient()
+            {
+                Name = "Ingredient"
+            }
+        };
+        dish.DishIngredients.Add(dishIngredient);
+        // Act
+        dish.DishIngredients.Remove(dishIngredient);
+        // Assert
+        Assert.Empty(dish.DishIngredients);
     }
 }
