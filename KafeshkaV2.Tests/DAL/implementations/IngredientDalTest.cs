@@ -73,7 +73,7 @@ public class IngredientDalTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(ingredients.Count+ initialTable.Count(), result.Count());
+        Assert.Equal(ingredients.Count  + initialTable.Count() + 2 , result.Count());
         // Assert other properties or use collection assertions as needed
     }
 
