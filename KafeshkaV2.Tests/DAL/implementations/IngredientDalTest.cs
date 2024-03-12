@@ -156,7 +156,7 @@ public class IngredientDalTest
     private static AppDbContext CreateDbContext()
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase(databaseName: "TestDatabase")
+            .UseInMemoryDatabase(databaseName: "IngredientDalTest")
             .Options;
 
         return new AppDbContext(options);

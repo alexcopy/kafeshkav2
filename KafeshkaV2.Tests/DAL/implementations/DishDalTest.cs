@@ -127,7 +127,7 @@ public class DishDalTest
     private static AppDbContext CreateDbContext()
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase(databaseName: "TestDatabase")
+            .UseInMemoryDatabase(databaseName: "DishDalTest")
             .Options;
 
         return new AppDbContext(options);
