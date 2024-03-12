@@ -38,5 +38,9 @@ public class DishDal(AppDbContext dbContext) : IDishDal
         dbContext.Dish.Remove(dishToDelete);
         dbContext.SaveChanges();
     }
-    
+
+    public Dish FindById(int dishId)
+    {
+        return  dbContext.Dish.Find(dishId);
+    }
 }
