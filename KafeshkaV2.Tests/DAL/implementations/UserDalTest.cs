@@ -126,5 +126,37 @@ public class UserDalTest
             // Assert
             Assert.Null(result);
         }
+
+        [Fact]
+        public void AddUser_Should_Enforce_Unique_Email_Constraint()
+        {
+            // Arrange
+            using var dbContext = new AppDbContext(_options);
+            var userDal = new UserDal(dbContext);
+            var testEmail = "test@example.com";
+            var userId = 1;
+            var testPassword = "passw0rd";
+            var user1 = new User
+            {
+                UserId = userId,
+                email = testEmail,
+                FirstName = "John",
+                LastName = "Doe",
+                password = testPassword
+            };
+
+            // Act
+
+            userDal.AddUser(user1);
+
+            // Assert
+            // Attempting to add a user with the same email should throw an exception
+            Assert.Throws<DbUpdateException>(() =>
+            {
+                var user2 = new User { email = testEmail, password = "hashed_password_2" };
+                userDal.AddUser(user2);
+                dbContext.SaveChanges();
+            });
+        }
     }
 }
