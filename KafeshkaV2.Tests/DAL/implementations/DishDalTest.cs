@@ -73,7 +73,7 @@ public class DishDalTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(dishes.Count + initialTable.Count() + 2 , result.Count());
+        Assert.Equal(dishes.Count() + initialTable.Count(), result.Count());
     }
 
     [Fact]
