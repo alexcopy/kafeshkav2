@@ -16,9 +16,11 @@ public class Dish : IDish
             {
                 throw new ArgumentException("Name should be at least 2 letters long.");
             }
+
             _name = value;
         }
     }
+
     public decimal Price
     {
         get => _price;

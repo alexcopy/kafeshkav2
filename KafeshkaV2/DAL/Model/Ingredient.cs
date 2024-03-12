@@ -9,7 +9,9 @@ public class Ingredient : IIngredient
     public int Calories { get; set; }
     public bool Allergy { get; set; }
     public int Quantity { get; set; }
+
     public string? Notes { get; set; }
+
     // Навигационное свойство к DishIngredients
     public ICollection<DishIngredient> DishIngredients { get; set; } = new List<DishIngredient>();
 }

@@ -17,6 +17,7 @@ public class DishIngredient : IDishIngredient
             {
                 throw new InvalidOperationException("Quantity should not be negative.");
             }
+
             _quantity = value;
         }
     }
@@ -34,5 +35,7 @@ public class DishIngredient : IDishIngredient
     public required Ingredient Ingredient { get; set; }
 
     // Existing constructor
-    public DishIngredient() { }
+    public DishIngredient()
+    {
+    }
 }

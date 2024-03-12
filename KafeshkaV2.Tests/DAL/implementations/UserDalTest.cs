@@ -12,8 +12,7 @@ namespace KafeshkaV2.Tests.DAL.implementations;
 [TestSubject(typeof(UserDal))]
 public class UserDalTest
 {
-
- public class UserDalTests : IDisposable
+    public class UserDalTests : IDisposable
     {
         private readonly SqliteConnection _connection;
         private readonly DbContextOptions<AppDbContext> _options;
