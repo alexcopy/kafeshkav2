@@ -15,6 +15,18 @@ public class DishIngredientDalTests
     private readonly SqliteConnection _connection;
     private readonly DbContextOptions<AppDbContext> _options;
 
+    private static AppDbContext CreateDbContext()
+    {
+        var options = new DbContextOptionsBuilder<AppDbContext>()
+            .UseInMemoryDatabase(databaseName: "TestDatabase")
+            .Options;
+
+        return new AppDbContext(options);
+    }
+    public void Dispose()
+    {
+        _connection.Close();
+    }
 
     public DishIngredientDalTests()
     {
@@ -29,10 +41,7 @@ public class DishIngredientDalTests
         dbContext.Database.EnsureCreated();
     }
 
-    public void Dispose()
-    {
-        _connection.Close();
-    }
+
 
     [Fact]
     public void GetById_Should_Return_Correct_DishIngredient()
@@ -135,14 +144,7 @@ public class DishIngredientDalTests
     // Add similar tests for Create, Update, and Delete methods as needed
     // ...
 
-    private static AppDbContext CreateDbContext()
-    {
-        var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase(databaseName: "TestDatabase")
-            .Options;
 
-        return new AppDbContext(options);
-    }
 
     [Fact]
     public void Create_Should_Add_New_DishIngredient()
@@ -190,7 +192,6 @@ public class DishIngredientDalTests
         dbContext.SaveChanges();
 
 
-
         var updatedDishName = "Updated Dish Name";
 
         // Ensure that the DishIngredient is tracked by the context
@@ -226,5 +227,8 @@ public class DishIngredientDalTests
         // Verify that the existing DishIngredient was deleted from the database
         var deletedDishIngredient = dbContext.DishIngredients.Find(existingDishIngredient.DishIngredientId);
         Assert.Null(deletedDishIngredient);
+        // Verify that the associated Dish was also deleted
+        var deletedDish = dbContext.Dish.Find(existingDishIngredient.DishId);
+
     }
 }
