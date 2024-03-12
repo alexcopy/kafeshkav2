@@ -1,4 +1,5 @@
 namespace KafeshkaV2.DAL.Model;
+
 using Xunit;
 
 public class IngredientTests
@@ -25,7 +26,7 @@ public class IngredientTests
         {
             Name = "Name"
         };
-        var dishIngredient = CreateDishIngredientWithIngredient();
+
         // Act
         var dishIngredients = ingredient.DishIngredients;
 
