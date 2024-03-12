@@ -3,6 +3,7 @@ using KafeshkaV2.DAL.interfaces;
 using KafeshkaV2.DAL.Model;
 
 namespace KafeshkaV2.DAL.implementations;
+
 public class DishIngredientDal : IDishIngredientDal
 {
     private readonly AppDbContext _dbContext;
@@ -47,12 +48,9 @@ public class DishIngredientDal : IDishIngredientDal
     {
         // Implementation to delete DishIngredient with the specified id
         var dishIngredient = _dbContext.DishIngredients.Find(id);
-
-        if (dishIngredient != null)
-        {
-            _dbContext.DishIngredients.Remove(dishIngredient);
-            _dbContext.SaveChanges();
-        }
+        if (dishIngredient == null) return;
+        _dbContext.DishIngredients.Remove(dishIngredient);
+        _dbContext.SaveChanges();
         // Handle the case where dishIngredient is null if needed
     }
 }
