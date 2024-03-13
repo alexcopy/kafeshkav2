@@ -25,7 +25,7 @@ public class DishIngredientControllerTest
         {
             new Dish { Name = "Dish1" },
             new Dish { Name = "Dish2" },
-            // Add more dishes as needed
+
         };
 
         mockDishDal.Setup(d => d.GetAll()).Returns(expectedDishes);
