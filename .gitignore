@@ -50,3 +50,56 @@ $RECYCLE.BIN/
 .env
 
 # Recycle Bin used on file shares
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/dist
+/tmp
+/out-tsc
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# System Files
+/.DS_Store
+/Thumbs.db
+
+# IDE files
+/.idea
+/.vscode
+
+# Environment variables
+.env
+
+# Unit test coverage
+/coverage
+
+# Angular files
+*.log
+*.iml
+*.class
+
+# Dependency directory
+packages/
+
+# npm debugging logs
+npm-debug.log*
+
+# yarn.lock file
+yarn.lock
+
+# Angular CLI config file
+.angular-cli.json
+
+# Angular CLI environment files
+environment*.ts
+
+# TypeScript configuration
+tsconfig*.json
+
+# Typescript files
+*.ts
+
+# End of File
