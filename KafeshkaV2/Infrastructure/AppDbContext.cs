@@ -1,5 +1,6 @@
 using KafeshkaV2.DAL.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 public class AppDbContext : DbContext
 {
@@ -14,12 +15,22 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Configure the User entity
-        modelBuilder.Entity<User>()
-            .HasKey(u => u.UserId); // Assuming UserId is the primary key
+        modelBuilder.Entity<User>(entity =>
+                {
+                    entity.HasKey(u => u.UserId);
+                    entity.Property(u => u.email) .IsRequired();
+                    entity.Property(u => u.FirstName) .IsRequired();
+                    entity.Property(u => u.password) .IsRequired();
+                });
 
-        modelBuilder.Entity<User>()
-            .Property(u => u.email)
-            .IsRequired();
+        modelBuilder.Entity<PaymentDetail>(entity =>
+        {
+            entity.HasKey(k => k.PaymentDetailId);
+            entity.Property(k => k.CardNumber).IsRequired();
+            entity.Property(k => k.ExpirationDate).IsRequired();
+            entity.Property(k => k.SecurityCode).IsRequired();
+            entity.Property(k => k.CardOwnerName).IsRequired();
+        });
 
         modelBuilder.Entity<DishIngredient>()
             .HasKey(di => di.DishIngredientId);
