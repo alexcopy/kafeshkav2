@@ -16,6 +16,6 @@ public class PaymentDetail :IPaymentDetail
     //mm/yy
     [Column(TypeName = "nvarchar(5)")]
     public string ExpirationDate { get; set; } = "";
-    [Column(TypeName = "nvarchar(100)")]
+    [Column(TypeName = "nvarchar(3)")]
     public string SecurityCode { get; set; }= "";
 }

@@ -8,6 +8,7 @@ public class AppDbContext : DbContext
     public DbSet<Ingredient> Ingredients { get; set; }
     public DbSet<Dish> Dish { get; set; }
     public DbSet<DishIngredient> DishIngredients { get; set; }
+    public DbSet<PaymentDetail>PaymentDetails { get; set; }
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }

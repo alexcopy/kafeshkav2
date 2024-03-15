@@ -31,7 +31,7 @@ namespace KafeshkaV2.Migrations
                     CardOwnerName = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     CardNumber = table.Column<string>(type: "nvarchar(16)", nullable: false),
                     ExpirationDate = table.Column<string>(type: "nvarchar(5)", nullable: false),
-                    SecurityCode = table.Column<string>(type: "nvarchar(100)", nullable: false)
+                    SecurityCode = table.Column<string>(type: "nvarchar(3)", nullable: false)
                 },
                 constraints: table =>
                 {
