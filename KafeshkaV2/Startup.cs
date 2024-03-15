@@ -5,7 +5,8 @@ using KafeshkaV2.DAL.implementations;
 using KafeshkaV2.DAL.interfaces;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.SpaServices.Extensions;
+using Microsoft.AspNetCore.Components.WebAssembly;
+using Microsoft.Extensions.FileProviders;
 
 
 public class Startup
@@ -25,7 +26,7 @@ public class Startup
         // Register Spa static files
         services.AddSpaStaticFiles(configuration =>
         {
-            configuration.RootPath = "ClientApp/dist"; // Specify the root path of your Angular app
+            configuration.RootPath = "../ClientApp/dist/client-app"; // Specify the root path of your Angular app
         });
 
         services.AddDbContext<AppDbContext>(options =>
@@ -40,12 +41,16 @@ public class Startup
 
         services.AddControllersWithViews();
     }
-
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "../ClientApp";
+                spa.UseAngularCliServer(npmScript: "start");
+            });
         }
         else
         {
@@ -55,6 +60,15 @@ public class Startup
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
+
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            FileProvider = new PhysicalFileProvider(
+                Path.Combine(env.ContentRootPath, "../ClientApp/dist/client-app")),
+                RequestPath = "/client-app"
+
+        });
+
 
         app.UseRouting();
 
@@ -66,21 +80,48 @@ public class Startup
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
         });
-
-        // Serve Angular files
-        app.UseDefaultFiles();
-        app.UseStaticFiles();
-        app.UseSpaStaticFiles();
-
-        // Configure Angular SPA
-        app.UseSpa(spa =>
-        {
-            spa.Options.SourcePath = "ClientApp";
-
-            if (env.IsDevelopment())
-            {
-                spa.UseAngularCliServer(npmScript: "start");
-            }
-        });
     }
+
+
+    // public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    // {
+    //     if (env.IsDevelopment())
+    //     {
+    //         app.UseDeveloperExceptionPage();
+    //     }
+    //     else
+    //     {
+    //         app.UseExceptionHandler("/Home/Error");
+    //         app.UseHsts();
+    //     }
+    //
+    //     app.UseHttpsRedirection();
+    //     app.UseEndpoints(endpoints =>
+    //     {
+    //         endpoints.MapControllerRoute(
+    //             name: "default",
+    //             pattern: "{controller=Home}/{action=Index}/{id?}");
+    //     });
+    //
+    //     app.UseStaticFiles(new StaticFileOptions
+    //     {
+    //         FileProvider = new PhysicalFileProvider(
+    //             Path.Combine(env.ContentRootPath, "ClientApp", "dist", "client-app")),
+    //         RequestPath = "/client-app"
+    //     });
+    //     app.UseRouting();
+    //
+    //     app.UseAuthorization();
+    //
+    //     // Configure Angular SPA
+    //     app.UseSpa(spa =>
+    //     {
+    //         spa.Options.SourcePath = "ClientApp";
+    //
+    //         if (env.IsDevelopment())
+    //         {
+    //             spa.UseAngularCliServer(npmScript: "start");
+    //         }
+    //     });
+    // }
 }
