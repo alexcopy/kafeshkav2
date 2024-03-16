@@ -24,14 +24,14 @@ namespace KafeshkaV2.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PaymentDetail>>> GetPaymentDetails()
         {
-            return await _context.PaymentDetails.ToListAsync();
+            return await _context.PaymentDetail.ToListAsync();
         }
 
         // GET: api/PaymentDetailController/5
         [HttpGet("{id}")]
         public async Task<ActionResult<PaymentDetail>> GetPaymentDetail(int id)
         {
-            var paymentDetail = await _context.PaymentDetails.FindAsync(id);
+            var paymentDetail = await _context.PaymentDetail.FindAsync(id);
 
             if (paymentDetail == null)
             {
@@ -77,7 +77,7 @@ namespace KafeshkaV2.Controllers
         [HttpPost]
         public async Task<ActionResult<PaymentDetail>> PostPaymentDetail(PaymentDetail paymentDetail)
         {
-            _context.PaymentDetails.Add(paymentDetail);
+            _context.PaymentDetail.Add(paymentDetail);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetPaymentDetail", new { id = paymentDetail.PaymentDetailId }, paymentDetail);
@@ -87,13 +87,13 @@ namespace KafeshkaV2.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePaymentDetail(int id)
         {
-            var paymentDetail = await _context.PaymentDetails.FindAsync(id);
+            var paymentDetail = await _context.PaymentDetail.FindAsync(id);
             if (paymentDetail == null)
             {
                 return NotFound();
             }
 
-            _context.PaymentDetails.Remove(paymentDetail);
+            _context.PaymentDetail.Remove(paymentDetail);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -101,7 +101,7 @@ namespace KafeshkaV2.Controllers
 
         private bool PaymentDetailExists(int id)
         {
-            return _context.PaymentDetails.Any(e => e.PaymentDetailId == id);
+            return _context.PaymentDetail.Any(e => e.PaymentDetailId == id);
         }
     }
 }
