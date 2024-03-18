@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http'
 import {environment} from "../../environments/environment";
 import {PaymentDetail} from "./payment-detail.model";
+import {NgForm} from "@angular/forms";
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ export class PaymentDetailService {
   url: string = environment.apiBaseUrl + "/PaymentDetail"
   list: PaymentDetail[] = [];
   formData: PaymentDetail = new PaymentDetail();
+  formSubmitted: boolean = false;
 
   constructor(private http: HttpClient) {
   }
@@ -27,5 +29,11 @@ export class PaymentDetailService {
 
   postPaymentDetail() {
     return this.http.post(this.url, this.formData);
+  }
+
+  resetForm(form: NgForm) {
+    form.form.reset();
+    this.formSubmitted = false;
+    this.formData = new PaymentDetail();
   }
 }

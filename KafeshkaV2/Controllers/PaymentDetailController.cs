@@ -69,7 +69,7 @@ namespace KafeshkaV2.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(await _context.PaymentDetail.ToListAsync());
         }
 
         // POST: api/PaymentDetailController
@@ -79,8 +79,8 @@ namespace KafeshkaV2.Controllers
         {
             _context.PaymentDetail.Add(paymentDetail);
             await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetPaymentDetail", new { id = paymentDetail.PaymentDetailId }, paymentDetail);
+            // CreatedAtAction("GetPaymentDetail", new { id = paymentDetail.PaymentDetailId }, paymentDetail)
+            return Ok(await _context.PaymentDetail.ToListAsync());
         }
 
         // DELETE: api/PaymentDetailController/5
@@ -96,7 +96,7 @@ namespace KafeshkaV2.Controllers
             _context.PaymentDetail.Remove(paymentDetail);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(await _context.PaymentDetail.ToListAsync());
         }
 
         private bool PaymentDetailExists(int id)
