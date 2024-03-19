@@ -31,6 +31,14 @@ export class PaymentDetailService {
     return this.http.post(this.url, this.formData);
   }
 
+  deletePaymentDetail(id: number) {
+    return this.http.delete(this.url + "/" + id);
+  }
+
+  putPaymentDetail() {
+    return this.http.put(this.url + "/" + this.formData.paymentDetailId, this.formData);
+  }
+
   resetForm(form: NgForm) {
     form.form.reset();
     this.formSubmitted = false;
