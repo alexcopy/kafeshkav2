@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KafeshkaV2.BL.validators.payment;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,10 +15,12 @@ namespace KafeshkaV2.Controllers
     public class PaymentDetailController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly PaymentDetailValidator _validator;
 
-        public PaymentDetailController(AppDbContext context)
+        public PaymentDetailController(AppDbContext context, PaymentDetailValidator validator)
         {
             _context = context;
+            _validator = validator;
         }
 
         // GET: api/PaymentDetailController
@@ -46,6 +49,16 @@ namespace KafeshkaV2.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPaymentDetail(int id, PaymentDetail paymentDetail)
         {
+            // Validate the paymentDetail object using the validator
+            var validationResult = await _validator.ValidateAsync(paymentDetail);
+
+            // Check if validation fails
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors.Select(e => e.ErrorMessage));
+            }
+
+            // Continue with your existing logic
             if (id != paymentDetail.PaymentDetailId)
             {
                 return BadRequest();
@@ -77,6 +90,15 @@ namespace KafeshkaV2.Controllers
         [HttpPost]
         public async Task<ActionResult<PaymentDetail>> PostPaymentDetail(PaymentDetail paymentDetail)
         {
+            // Validate the paymentDetail object using the validator
+            var validationResult = await _validator.ValidateAsync(paymentDetail);
+
+            // Check if validation fails
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors.Select(e => e.ErrorMessage));
+            }
+
             _context.PaymentDetail.Add(paymentDetail);
             await _context.SaveChangesAsync();
             // CreatedAtAction("GetPaymentDetail", new { id = paymentDetail.PaymentDetailId }, paymentDetail)

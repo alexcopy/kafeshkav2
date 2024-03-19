@@ -1,6 +1,7 @@
 using System.Configuration;
 using KafeshkaV2.BL.implementations;
 using KafeshkaV2.BL.interfaces;
+using KafeshkaV2.BL.validators.payment;
 using KafeshkaV2.DAL.implementations;
 using KafeshkaV2.DAL.interfaces;
 using KafeshkaV2.DAL.Model;
@@ -42,6 +43,7 @@ public class Startup
         services.AddScoped<IPaymentDetail, PaymentDetail>();
         services.AddScoped<IDishIngredientDal, DishIngredientDal>();
         services.AddScoped<IIngredientDal, IngredientDal>();
+        services.AddSingleton<PaymentDetailValidator>();
 
         services.AddControllers();
         services.AddEndpointsApiExplorer();
