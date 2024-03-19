@@ -39,6 +39,9 @@ export class PaymentDetailsFormComponent {
         },
         error: err => {
           console.log(err);
+          const errorMessage = err.error instanceof Array ? err.error.join(', ') : 'An error occurred.';
+          // Display error message using Toastr
+          this.toastr.error(errorMessage, "Error");
         }
       });
   }
@@ -53,6 +56,9 @@ export class PaymentDetailsFormComponent {
         },
         error: err => {
           console.log(err);
+          const errorMessage = err.error instanceof Array ? err.error.join('\n\r') : 'An error occurred.';
+          // Display error message using Toastr
+          this.toastr.error(errorMessage, "Error");
         }
       });
   }
