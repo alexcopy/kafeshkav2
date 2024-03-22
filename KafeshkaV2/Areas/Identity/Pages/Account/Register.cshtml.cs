@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -70,6 +71,18 @@ namespace KafeshkaV2.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
+            [Required(ErrorMessage = "The first name field is required.")]
+            [PersonalData]
+            [Display(Name = "FirstName")]
+            [Column(TypeName = "nvarchar(100)")]
+            public string FirstName { get; set;}
+
+            [Required]
+            [PersonalData]
+            [Display(Name = "LastName")]
+            [Column(TypeName = "nvarchar(100)")]
+            public string LastName { get; set;}
+
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -78,6 +91,7 @@ namespace KafeshkaV2.Areas.Identity.Pages.Account
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
+
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used

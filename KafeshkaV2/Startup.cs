@@ -31,7 +31,7 @@ public class Startup
 
         services.AddSpaStaticFiles(configuration =>
         {
-            configuration.RootPath = "../ClientApp/dist"; // Specify the root path of your Angular app
+            configuration.RootPath = "../KafeshkaV2App/dist"; // Specify the root path of your Angular app
         });
 
         services.AddDbContext<AppDbContext>(options =>
