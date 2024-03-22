@@ -5,6 +5,7 @@ using KafeshkaV2.BL.validators.payment;
 using KafeshkaV2.DAL.implementations;
 using KafeshkaV2.DAL.interfaces;
 using KafeshkaV2.DAL.Model;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.SpaServices.Extensions;
@@ -44,7 +45,9 @@ public class Startup
         services.AddScoped<IDishIngredientDal, DishIngredientDal>();
         services.AddScoped<IIngredientDal, IngredientDal>();
         services.AddSingleton<PaymentDetailValidator>();
-
+        services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            .AddEntityFrameworkStores<AppDbContext>();
+        services.AddRazorPages();
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(c =>
@@ -86,20 +89,7 @@ public class Startup
             endpoints.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
-        });
-
-        // Serve Angular files
-
-
-        // Configure Angular SPA
-        app.UseSpa(spa =>
-        {
-            spa.Options.SourcePath = "../ClientApp";
-
-            if (env.IsDevelopment())
-            {
-                spa.UseAngularCliServer(npmScript: "start");
-            }
+            endpoints.MapRazorPages();
         });
     }
 }
