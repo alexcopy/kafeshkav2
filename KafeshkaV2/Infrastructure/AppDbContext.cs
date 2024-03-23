@@ -1,3 +1,4 @@
+using KafeshkaV2.Areas.Identity;
 using KafeshkaV2.DAL.Model;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

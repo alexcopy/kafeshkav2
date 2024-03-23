@@ -24,17 +24,17 @@ namespace KafeshkaV2.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly IUserStore<IdentityUser> _userStore;
-        private readonly IUserEmailStore<IdentityUser> _emailStore;
+        private readonly SignInManager<KafeshkaAppUser> _signInManager;
+        private readonly UserManager<KafeshkaAppUser> _userManager;
+        private readonly IUserStore<KafeshkaAppUser> _userStore;
+        private readonly IUserEmailStore<KafeshkaAppUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            IUserStore<IdentityUser> userStore,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<KafeshkaAppUser> userManager,
+            IUserStore<KafeshkaAppUser> userStore,
+            SignInManager<KafeshkaAppUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
@@ -71,15 +71,23 @@ namespace KafeshkaV2.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
+            /// <summary>
+            /// Gets or sets the first name of the user.
+            /// </summary>
             [Required(ErrorMessage = "The first name field is required.")]
             [PersonalData]
-            [Display(Name = "FirstName")]
+            [Display(Name = "First Name")]
+            [DataType(DataType.Text)]
             [Column(TypeName = "nvarchar(100)")]
             public string FirstName { get; set;}
 
+            /// <summary>
+            /// Gets or sets the last name of the user.
+            /// </summary>
             [Required]
             [PersonalData]
-            [Display(Name = "LastName")]
+            [Display(Name = "Last Name")]
+            [DataType(DataType.Text)]
             [Column(TypeName = "nvarchar(100)")]
             public string LastName { get; set;}
 
@@ -127,6 +135,8 @@ namespace KafeshkaV2.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -168,27 +178,27 @@ namespace KafeshkaV2.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private IdentityUser CreateUser()
+        private KafeshkaAppUser CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<IdentityUser>();
+                return Activator.CreateInstance<KafeshkaAppUser>();
             }
             catch
             {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
-                    $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(KafeshkaAppUser)}'. " +
+                                                    $"Ensure that '{nameof(KafeshkaAppUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                                                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }
 
-        private IUserEmailStore<IdentityUser> GetEmailStore()
+        private IUserEmailStore<KafeshkaAppUser> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
-            return (IUserEmailStore<IdentityUser>)_userStore;
+            return (IUserEmailStore<KafeshkaAppUser>)_userStore;
         }
     }
 }
