@@ -51,6 +51,7 @@ public class Startup
         services.AddScoped<IPaymentDetail, PaymentDetail>();
         services.AddScoped<IDishIngredientDal, DishIngredientDal>();
         services.AddScoped<IIngredientDal, IngredientDal>();
+        services.AddScoped<UserManager<KafeshkaAppUser>>();
         services.AddSingleton<PaymentDetailValidator>();
 
         services.AddDefaultIdentity<KafeshkaAppUser>(options => options.SignIn.RequireConfirmedAccount = false)
