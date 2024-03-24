@@ -1,10 +1,13 @@
 using System.Configuration;
+using KafeshkaV2.Areas.Identity;
 using KafeshkaV2.BL.implementations;
 using KafeshkaV2.BL.interfaces;
 using KafeshkaV2.BL.validators.payment;
 using KafeshkaV2.DAL.implementations;
 using KafeshkaV2.DAL.interfaces;
 using KafeshkaV2.DAL.Model;
+using KafeshkaV2.Infrastructure;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.SpaServices.Extensions;
@@ -30,10 +33,15 @@ public class Startup
 
         services.AddSpaStaticFiles(configuration =>
         {
-            configuration.RootPath = "../ClientApp/dist"; // Specify the root path of your Angular app
+            configuration.RootPath = "../KafeshkaV2App/dist"; // Specify the root path of your Angular app
         });
 
         services.AddDbContext<AppDbContext>(options =>
+            options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
+                ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection"))));
+
+        // Register the KafeshkaUserDbContext for identity with the same connection string
+        services.AddDbContext<KafeshkaUserDbContext>(options =>
             options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
                 ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection"))));
 
@@ -43,14 +51,24 @@ public class Startup
         services.AddScoped<IPaymentDetail, PaymentDetail>();
         services.AddScoped<IDishIngredientDal, DishIngredientDal>();
         services.AddScoped<IIngredientDal, IngredientDal>();
+        services.AddScoped<UserManager<KafeshkaAppUser>>();
         services.AddSingleton<PaymentDetailValidator>();
+
+        services.AddDefaultIdentity<KafeshkaAppUser>(options => options.SignIn.RequireConfirmedAccount = false)
+            .AddEntityFrameworkStores<KafeshkaUserDbContext>();
+
+        services.AddRazorPages();
+        services.Configure<IdentityOptions>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+            }
+        );
 
         services.AddControllers();
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen(c =>
-        {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "KafeshkaV2", Version = "v1" });
-        });
+        services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "KafeshkaV2", Version = "v1" }); });
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -61,10 +79,7 @@ public class Startup
             {
                 options.RouteTemplate = "swagger/{documentName}/swagger.json";
             });
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "KafeshkaV2 v1");
-            });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "KafeshkaV2 v1"); });
             app.UseDeveloperExceptionPage();
         }
         else
@@ -72,34 +87,22 @@ public class Startup
             app.UseExceptionHandler("/Home/Error");
             app.UseHsts();
         }
-
+        app.UseAuthentication();
+        app.UseAuthorization();
         app.UseHttpsRedirection();
         app.UseDefaultFiles();
         app.UseStaticFiles();
         app.UseSpaStaticFiles();
         app.UseRouting();
         app.UseAuthorization();
-        app.UseCors(options =>  options.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader());
+        app.UseCors(options => options.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader());
 
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
-        });
-
-        // Serve Angular files
-
-
-        // Configure Angular SPA
-        app.UseSpa(spa =>
-        {
-            spa.Options.SourcePath = "../ClientApp";
-
-            if (env.IsDevelopment())
-            {
-                spa.UseAngularCliServer(npmScript: "start");
-            }
+            endpoints.MapRazorPages();
         });
     }
 }

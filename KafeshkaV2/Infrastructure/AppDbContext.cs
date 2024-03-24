@@ -1,20 +1,23 @@
+using KafeshkaV2.Areas.Identity;
 using KafeshkaV2.DAL.Model;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-public class AppDbContext : DbContext
+public class AppDbContext : IdentityDbContext
 {
     public DbSet<User> User { get; set; }
     public DbSet<Ingredient> Ingredients { get; set; }
     public DbSet<Dish> Dish { get; set; }
     public DbSet<DishIngredient> DishIngredients { get; set; }
-    public DbSet<PaymentDetail>PaymentDetail { get; set; }
+    public DbSet<PaymentDetail> PaymentDetail { get; set; }
+
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
         // Configure the User entity
         modelBuilder.Entity<User>(entity =>
                 {
