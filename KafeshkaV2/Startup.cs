@@ -36,14 +36,24 @@ public class Startup
             configuration.RootPath = "../KafeshkaV2App/dist"; // Specify the root path of your Angular app
         });
 
-        services.AddDbContext<AppDbContext>(options =>
+        services.AddDbContextPool<AppDbContext>(options =>
+        {
             options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
-                ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection"))));
+                ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection")));
+        });
 
-        // Register the KafeshkaUserDbContext for identity with the same connection string
-        services.AddDbContext<KafeshkaUserDbContext>(options =>
+        services.AddDbContextPool<KafeshkaUserDbContext>(options =>
+        {
             options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
-                ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection"))));
+                ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection")));
+        });
+
+        services.AddDbContextPool<RestaurantDbContext>(options =>
+        {
+            options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
+                ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection")));
+        });
+
 
         services.AddScoped<IUserBL, UserBL>();
         services.AddScoped<IUserDal, UserDal>();
