@@ -1,4 +1,3 @@
-using System.Configuration;
 using KafeshkaV2.Areas.Identity;
 using KafeshkaV2.BL.implementations;
 using KafeshkaV2.BL.interfaces;
@@ -8,12 +7,9 @@ using KafeshkaV2.DAL.interfaces;
 using KafeshkaV2.DAL.Model;
 using KafeshkaV2.Infrastructure;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.SpaServices.Extensions;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
-
 
 public class Startup
 {

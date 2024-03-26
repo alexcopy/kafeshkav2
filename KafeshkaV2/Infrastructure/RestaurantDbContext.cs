@@ -6,6 +6,10 @@ namespace KafeshkaV2.Infrastructure;
 public class RestaurantDbContext : DbContext
 {
     // DbSet for Customer entity
+    protected RestaurantDbContext()
+    {
+    }
+
     public DbSet<Customer> Customers { get; set; }
 
     // DbSet for Item entity
@@ -17,7 +21,7 @@ public class RestaurantDbContext : DbContext
     // DbSet for OrderItems entity
     public DbSet<OrderItems> OrderItems { get; set; }
 
-    public RestaurantDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    public RestaurantDbContext(DbContextOptions<RestaurantDbContext> options) : base(options)
     {
     }
 

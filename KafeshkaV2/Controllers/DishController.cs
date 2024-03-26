@@ -1,9 +1,6 @@
-using System.Diagnostics;
-using KafeshkaV2.DAL.implementations;
 using KafeshkaV2.DAL.interfaces;
 using KafeshkaV2.DAL.Model;
 using Microsoft.AspNetCore.Mvc;
-using KafeshkaV2.Models;
 
 namespace KafeshkaV2.Controllers;
 
