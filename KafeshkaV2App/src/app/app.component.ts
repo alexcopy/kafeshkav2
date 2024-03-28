@@ -10,5 +10,5 @@ import {PaymentDetailsComponent} from "./payment-details/payment-details.compone
   styles: [],
 })
 export class AppComponent {
-  title = 'KafeshkaV2App';
+  title = 'Kafeshka V2';
 }
