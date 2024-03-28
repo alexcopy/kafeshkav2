@@ -20,3 +20,10 @@ form input::placeholder {
 form.submitted input.ng-invalid{
   border-color: red;
 }
+jumbotron{
+  padding-top: 0px;
+  background: #ffffff;
+}
+table.table-hover tbody tr:hover{
+  cursor: pointer;
+}
