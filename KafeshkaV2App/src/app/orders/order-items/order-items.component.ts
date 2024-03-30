@@ -5,6 +5,7 @@ import {FormsModule, NgForm} from "@angular/forms";
 import {ItemService} from "../../shared/item.service";
 import {NgForOf} from "@angular/common";
 import {OrderService} from "../../shared/order.service";
+import {OrdersComponent} from "../orders.component";
 
 @Component({
   selector: 'app-order-items',
@@ -22,7 +23,7 @@ export class OrderItemsComponent implements OnInit {
   isValid: boolean = true;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: OrderItem,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<OrderItemsComponent>,
     protected itemService: ItemService,
     protected orderService: OrderService,
@@ -30,7 +31,22 @@ export class OrderItemsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.itemService.getItemList()
+
+    this.itemService.getItemList();
+    console.log(this.data);
+    if (this.data.orderItemIndex == null) {
+      this.formData = {
+        OrderItemId: 0,
+        ItemName: '',
+        OrderId: this.data.OrderId,
+        ItemId: 0,
+        Price: 0,
+        Quantity: 1,
+        Total: 0
+      }
+    } else {
+      this.formData = Object.assign({}, this.orderService.orderItems[this.data.orderItemIndex]);
+    }
   }
 
   updatePrice(event: Event) {
@@ -51,19 +67,21 @@ export class OrderItemsComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    if(this.validateForm(form.value)) {
-      this.orderService.orderItems.push(form.value);
+    if (this.validateForm(form.value)) {
+      if (this.data.orderItemIndex == null) {
+        this.orderService.orderItems.push(form.value);
+      }else {
+        this.orderService.orderItems[this.data.orderItemIndex]=form.value;
+      }
       this.dialogRef.close();
     }
   }
 
   validateForm(formData: OrderItem) {
     this.isValid = true;
-    if (formData.OrderId == 0)
+    if (formData.ItemId == 0)
       this.isValid = false;
-    if (formData.Quantity == 0)
-      this.isValid = false;
-    if (formData.Price == 0)
+    else if (formData.Quantity == 0)
       this.isValid = false;
     return this.isValid;
   }

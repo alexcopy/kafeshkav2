@@ -55,7 +55,7 @@
     <th>Quantity</th>
     <th>Total</th>
     <th>
-      <a (click)="AddOrEditOrderItem(0, service.formData.OrderItemId)"  class="btn btn-sm btn-success"><i
+      <a (click)="AddOrEditOrderItem(null, service.formData.OrderNo)"  class="btn btn-sm btn-success"><i
         class="fa fa-plus"></i>Add Item</a>
     </th>
     </thead>
@@ -71,8 +71,10 @@
       <td>{{ item.Quantity }}</td>
       <td>{{ item.Total }}</td>
       <td>
-        <a (click)="AddOrEditOrderItem(i, service.formData.OrderItemId)"  class="btn btn-sm btn-info text-white"><i
+        <a (click)="AddOrEditOrderItem(i, service.formData.OrderNo)"  class="btn btn-sm btn-info text-white"><i
           class="fa fa-pencil"></i> </a>
+        <a (click)="onDeleteOrderItem(item.OrderItemId,   i)"  class="btn btn-sm btn-danger text-white m-lg-1"><i
+          class="fa fa-trash"></i> </a>
       </td>
     </tr>
     </tbody>

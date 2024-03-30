@@ -17,7 +17,6 @@ export class ItemService {
     this.http.get(this.url).subscribe({
       next: res => {
         this.itemsList = res as Item[];
-        console.log(this.itemsList);
       },
       error: err => {
         console.log(err);

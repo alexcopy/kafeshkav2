@@ -31,7 +31,7 @@ export class OrdersComponent implements OnInit {
     }
     this.service.formData = {
       OrderItemId: 0,
-      OrderNo: Math.floor(100000 * Math.random() * 900000).toString(),
+      OrderNo: Math.floor(100000 * Math.random() * 900000),
       CustomerId: 0,
       PMethod: "",
       GTotal: 0
@@ -39,13 +39,17 @@ export class OrdersComponent implements OnInit {
     this.service.orderItems = [];
   }
 
-  AddOrEditOrderItem(orderItemIndex: number, OrderId: number) {
+  AddOrEditOrderItem(orderItemIndex: any, OrderId: number) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.disableClose = true;
     dialogConfig.minWidth="50%";
     dialogConfig.data = {orderItemIndex, OrderId}
-    this.dialog.open(OrderItemsComponent);
+    this.dialog.open(OrderItemsComponent, dialogConfig);
+  }
+
+  onDeleteOrderItem(OrderItemId: number, i: number) {
+    this.service.orderItems.splice(i, 1);
   }
 }
 
