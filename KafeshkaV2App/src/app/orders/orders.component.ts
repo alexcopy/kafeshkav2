@@ -4,6 +4,7 @@ import {FormsModule, NgForm} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {OrderItemsComponent} from "./order-items/order-items.component";
+import {CustomerService} from "../shared/customer.service";
 
 
 @Component({
@@ -18,11 +19,16 @@ import {OrderItemsComponent} from "./order-items/order-items.component";
   styles: ``
 })
 export class OrdersComponent implements OnInit {
-  constructor(protected service: OrderService, private dialog: MatDialog) {
+  isValid: boolean = true;
+
+  constructor(protected service: OrderService,
+              private dialog: MatDialog,
+              protected customerService: CustomerService) {
   }
 
   ngOnInit(): void {
     this.resetForm();
+    this.customerService.getClientsList();
   }
 
   resetForm(form?: NgForm) {
@@ -32,7 +38,7 @@ export class OrdersComponent implements OnInit {
     this.service.formData = {
       OrderItemId: 0,
       OrderNo: Math.floor(100000 * Math.random() * 900000),
-      CustomerId: 0,
+      customerId: 0,
       PMethod: "",
       GTotal: 0
     }
@@ -60,6 +66,22 @@ export class OrdersComponent implements OnInit {
       return prev + curr.Total;
     }, 0);
     this.service.formData.GTotal = parseFloat((this.service.formData.GTotal).toFixed(2));
+  }
+
+  validateForm() {
+    this.isValid = true;
+    if (this.service.formData.customerId == 0) {
+      this.isValid = false;
+    } else if (this.service.orderItems.length == 0) {
+      this.isValid = false;
+    }
+    return this.isValid;
+  }
+
+  onSubmit(form: NgForm) {
+    if (this.validateForm()){
+
+    }
   }
 }
 
