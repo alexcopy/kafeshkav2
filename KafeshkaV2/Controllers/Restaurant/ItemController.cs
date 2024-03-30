@@ -3,7 +3,7 @@ using KafeshkaV2.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace KafeshkaV2.Controllers.Restaurant
+namespace KafeshkaV2.Controllers.Restaurant;
 
 [Route("api/[controller]")]
 [ApiController]
