@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using KafeshkaV2.BL.validators.payment;
-using Microsoft.AspNetCore.Http;
+using KafeshkaV2.DAL.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using KafeshkaV2.DAL.Model;
 
 namespace KafeshkaV2.Controllers
 {
