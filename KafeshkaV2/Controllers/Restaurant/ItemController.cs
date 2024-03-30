@@ -4,100 +4,99 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace KafeshkaV2.Controllers.Restaurant
+
+[Route("api/[controller]")]
+[ApiController]
+public class ItemController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ItemController : ControllerBase
+    private readonly RestaurantDbContext _context;
+
+    public ItemController(RestaurantDbContext context)
     {
-        private readonly RestaurantDbContext _context;
+        _context = context;
+    }
 
-        public ItemController(RestaurantDbContext context)
+    // GET: api/Item
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Item>>> GetItems()
+    {
+        return await _context.Items.ToListAsync();
+    }
+
+    // GET: api/Item/5
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Item>> GetItem(int id)
+    {
+        var item = await _context.Items.FindAsync(id);
+
+        if (item == null)
         {
-            _context = context;
+            return NotFound();
         }
 
-        // GET: api/Item
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Item>>> GetItems()
+        return item;
+    }
+
+    // PUT: api/Item/5
+    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutItem(int id, Item item)
+    {
+        if (id != item.ItemId)
         {
-            return await _context.Items.ToListAsync();
+            return BadRequest();
         }
 
-        // GET: api/Item/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Item>> GetItem(int id)
-        {
-            var item = await _context.Items.FindAsync(id);
+        _context.Entry(item).State = EntityState.Modified;
 
-            if (item == null)
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!ItemExists(id))
             {
                 return NotFound();
             }
-
-            return item;
-        }
-
-        // PUT: api/Item/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutItem(int id, Item item)
-        {
-            if (id != item.ItemId)
+            else
             {
-                return BadRequest();
+                throw;
             }
-
-            _context.Entry(item).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ItemExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
         }
 
-        // POST: api/Item
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Item>> PostItem(Item item)
+        return NoContent();
+    }
+
+    // POST: api/Item
+    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [HttpPost]
+    public async Task<ActionResult<Item>> PostItem(Item item)
+    {
+        _context.Items.Add(item);
+        await _context.SaveChangesAsync();
+
+        return CreatedAtAction("GetItem", new { id = item.ItemId }, item);
+    }
+
+    // DELETE: api/Item/5
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteItem(int id)
+    {
+        var item = await _context.Items.FindAsync(id);
+        if (item == null)
         {
-            _context.Items.Add(item);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetItem", new { id = item.ItemId }, item);
+            return NotFound();
         }
 
-        // DELETE: api/Item/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteItem(int id)
-        {
-            var item = await _context.Items.FindAsync(id);
-            if (item == null)
-            {
-                return NotFound();
-            }
+        _context.Items.Remove(item);
+        await _context.SaveChangesAsync();
 
-            _context.Items.Remove(item);
-            await _context.SaveChangesAsync();
+        return NoContent();
+    }
 
-            return NoContent();
-        }
-
-        private bool ItemExists(int id)
-        {
-            return _context.Items.Any(e => e.ItemId == id);
-        }
+    private bool ItemExists(int id)
+    {
+        return _context.Items.Any(e => e.ItemId == id);
     }
 }
