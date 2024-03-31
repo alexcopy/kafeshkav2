@@ -36,11 +36,11 @@ export class OrdersComponent implements OnInit {
       form.resetForm();
     }
     this.service.formData = {
-      OrderItemId: 0,
-      OrderNo: Math.floor(100000 * Math.random() * 900000),
+      orderId: 0,
+      orderNo: Math.floor(100000 * Math.random() * 900000),
       customerId: 0,
-      PMethod: "",
-      GTotal: 0
+      pMethod: "",
+      gTotal: 0
     }
     this.service.orderItems = [];
   }
@@ -62,10 +62,10 @@ export class OrdersComponent implements OnInit {
   }
 
   updateGrandTotal() {
-    this.service.formData.GTotal = this.service.orderItems.reduce((prev, curr) => {
+    this.service.formData.gTotal = this.service.orderItems.reduce((prev, curr) => {
       return prev + curr.Total;
     }, 0);
-    this.service.formData.GTotal = parseFloat((this.service.formData.GTotal).toFixed(2));
+    this.service.formData.gTotal = parseFloat((this.service.formData.gTotal).toFixed(2));
   }
 
   validateForm() {
@@ -80,7 +80,9 @@ export class OrdersComponent implements OnInit {
 
   onSubmit(form: NgForm) {
     if (this.validateForm()){
-
+      this.service.saveOrUpdateOrder().subscribe(res=>{
+        this.resetForm();
+      });
     }
   }
 }

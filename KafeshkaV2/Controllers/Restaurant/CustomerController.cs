@@ -73,10 +73,18 @@ public class CustomerController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
     {
-        _context.Customers.Add(customer);
-        await _context.SaveChangesAsync();
+        try
+        {
+            _context.Customers.Add(customer);
+            await _context.SaveChangesAsync();
 
-        return CreatedAtAction("GetCustomer", new { id = customer.CustomerId }, customer);
+            return CreatedAtAction("GetCustomer", new { id = customer.CustomerId }, customer);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     // DELETE: api/Customers/5
