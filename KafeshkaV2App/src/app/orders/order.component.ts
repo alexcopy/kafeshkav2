@@ -20,7 +20,7 @@ import {Router} from "@angular/router";
   templateUrl: './orders.component.html',
   styles: ``
 })
-export class OrdersComponent implements OnInit {
+export class OrderComponent implements OnInit {
   isValid: boolean = true;
 
   constructor(protected service: OrderService,

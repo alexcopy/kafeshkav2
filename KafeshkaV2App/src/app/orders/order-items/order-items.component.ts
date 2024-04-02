@@ -5,7 +5,7 @@ import {FormsModule, NgForm} from "@angular/forms";
 import {ItemService} from "../../shared/item.service";
 import {NgForOf} from "@angular/common";
 import {OrderService} from "../../shared/order.service";
-import {OrdersComponent} from "../orders.component";
+import {OrderComponent} from "../order.component";
 
 @Component({
   selector: 'app-order-items',

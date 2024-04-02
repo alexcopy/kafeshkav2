@@ -8,6 +8,6 @@ import {Component, OnInit} from '@angular/core';
   templateUrl: './order.component.html',
   styles: ``
 })
-export class OrderComponent {
+export class OrdersComponent {
 
 }
