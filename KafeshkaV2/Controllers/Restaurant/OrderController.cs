@@ -78,13 +78,12 @@ namespace KafeshkaV2.Controllers.Restaurant
                 _context.Orders.Add(order);
                 await _context.SaveChangesAsync();
                 // Return a 201 Created status code along with the created order
-                return CreatedAtAction("GetOrder", new { id = order.OrderId }, order);
+                return Ok();
             }
             catch (Exception e)
             {
                 // Log the exception
                 Console.WriteLine(e);
-
                 // Return a 500 Internal Server Error status code
                 return StatusCode(500, "An error occurred while processing your request." + e.InnerException);
             }

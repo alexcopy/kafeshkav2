@@ -6,9 +6,9 @@ export const routes: Routes = [
   {path: "", redirectTo: "order", pathMatch: "full"},
 
   {path: "payment", component: PaymentDetailsComponent},
-  {path: "orders", component: OrdersComponent},
+  {path: "order", component: OrdersComponent},
   {
-    path: "order", children: [
+    path: "orders", children: [
       {path: "", component: OrdersComponent},
       {path: "edit:id", component: OrdersComponent}
     ]

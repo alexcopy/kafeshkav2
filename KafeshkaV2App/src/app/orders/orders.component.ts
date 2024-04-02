@@ -5,6 +5,8 @@ import {NgForOf, NgIf} from "@angular/common";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {OrderItemsComponent} from "./order-items/order-items.component";
 import {CustomerService} from "../shared/customer.service";
+import {ToastrService} from "ngx-toastr";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -23,7 +25,9 @@ export class OrdersComponent implements OnInit {
 
   constructor(protected service: OrderService,
               private dialog: MatDialog,
-              protected customerService: CustomerService) {
+              protected customerService: CustomerService,
+              private toastr: ToastrService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -79,9 +83,11 @@ export class OrdersComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    if (this.validateForm()){
-      this.service.saveOrUpdateOrder().subscribe(res=>{
+    if (this.validateForm()) {
+      this.service.saveOrUpdateOrder().subscribe(res => {
         this.resetForm();
+        this.toastr.success("Your order Submitted Successfully!", "Kafeshka App");
+        this.router.navigate(["/orders"]);
       });
     }
   }

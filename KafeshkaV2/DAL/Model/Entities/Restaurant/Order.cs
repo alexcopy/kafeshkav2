@@ -22,8 +22,6 @@ using System.Text.Json.Serialization;
         public long CustomerId { get; set; }
 
 
-
         // // Navigation property representing the collection of OrderItems for this order
-        //
         public  ICollection<OrderItems> OrderItems { get; set; }
 }
