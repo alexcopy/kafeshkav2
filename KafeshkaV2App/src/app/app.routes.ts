@@ -8,11 +8,16 @@ export const routes: Routes = [
 
   {path: "payment", component: PaymentDetailsComponent},
   {path: "orders", component: OrdersComponent},
-  {path: "order", component: OrderComponent},
-
+  {
+    path: "order", children: [
+      {path: "", component: OrderComponent},
+      {path: "edit/:id", component: OrderComponent},
+      // {path: ":id", component: OrderComponent},
+    ]
+  },
   {
     path: "orders", children: [
-      {path: "edit:id", component: OrdersComponent}
+      {path: "", component: OrdersComponent},
     ]
   }
 ];

@@ -6,7 +6,7 @@ import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {OrderItemsComponent} from "./order-items/order-items.component";
 import {CustomerService} from "../shared/customer.service";
 import {ToastrService} from "ngx-toastr";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 
 
 @Component({
@@ -15,7 +15,8 @@ import {Router} from "@angular/router";
   imports: [
     FormsModule,
     NgIf,
-    NgForOf
+    NgForOf,
+    RouterLink
   ],
   templateUrl: './order.component.html',
   styles: ``
@@ -27,12 +28,16 @@ export class OrderComponent implements OnInit {
               private dialog: MatDialog,
               protected customerService: CustomerService,
               private toastr: ToastrService,
-              private router: Router) {
+              private router: Router,
+              private currentRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
-    this.resetForm();
-    this.customerService.getClientsList();
+    let orderId = this.currentRoute.snapshot.paramMap.get("id");
+    if (orderId == null)
+      this.resetForm();
+    else
+      this.customerService.getClientsList();
   }
 
   resetForm(form?: NgForm) {

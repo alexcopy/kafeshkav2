@@ -4,14 +4,14 @@
   <th>Customer</th>
   <th>P Method</th>
   <th>G Total</th>
-  <th></th>
+  <th><a href="" class="btn btn-outline-success" routerLink="/order"><i class="fa fa-plus-square"></i> Create new</a></th>
   </thead>
   <tbody>
   <tr *ngFor="let item of service.ordersList">
-    <th>{{ item.orderNo }}</th>
-    <td>{{ item.customer }}</td>
-    <td>{{ item.pMethod }}</td>
-    <td>{{ item.gTotal }}</td>
+    <th (click)="openForEdit(item.orderId)">{{ item.orderNo }}</th>
+    <td (click)="openForEdit(item.orderId)">{{ item.customer }}</td>
+    <td (click)="openForEdit(item.orderId)">{{ item.pMethod }}</td>
+    <td (click)="openForEdit(item.orderId)">{{ item.gTotal }}</td>
     <td></td>
 
   </tr>
