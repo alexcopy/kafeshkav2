@@ -36,7 +36,9 @@ export class OrderComponent implements OnInit {
     let orderId = this.currentRoute.snapshot.paramMap.get("id");
     if (orderId == null)
       this.resetForm();
-    else
+    else{
+      this.service.getOrderById(parseInt(orderId));
+    }
       this.customerService.getClientsList();
   }
 

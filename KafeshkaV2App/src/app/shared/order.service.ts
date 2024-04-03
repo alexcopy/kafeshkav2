@@ -37,4 +37,15 @@ export class OrderService {
       }
     });
   }
+  getOrderById(id:number) {
+    this.http.get<{ order: Order, orderItems: OrderItem[] }>(this.url + "/" + id).subscribe({
+      next: (res: { order: Order, orderItems: OrderItem[] }) => {
+        this.formData = res.order;
+        this.orderItems = res.orderItems;
+      },
+      error: err => {
+        console.log(err);
+      }
+    });
+  }
 }

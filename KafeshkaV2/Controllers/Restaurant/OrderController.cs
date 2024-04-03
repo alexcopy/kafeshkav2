@@ -1,5 +1,6 @@
 using KafeshkaV2.DAL.Model;
 using KafeshkaV2.Infrastructure;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -37,14 +38,30 @@ namespace KafeshkaV2.Controllers.Restaurant
         [HttpGet("{id}")]
         public async Task<ActionResult<Order>> GetOrder(long id)
         {
-            var order = await _context.Orders.FindAsync(id);
-
-            if (order == null)
-            {
-                return NotFound();
-            }
-
-            return order;
+            var order = (from a in _context.Orders
+                where a.OrderId == id
+                select new
+                {
+                    a.OrderId,
+                    a.OrderNo,
+                    a.PMethod,
+                    a.CustomerId,
+                    a.GTotal
+                }).FirstOrDefault();
+            var orderItems = (from a in _context.OrderItems
+                join b in _context.Items on a.ItemId equals b.ItemId
+                where a.OrderId == id
+                select new
+                {
+                    a.OrderId,
+                    a.OrderItemId,
+                    a.ItemId,
+                    ItemName = b.Name,
+                    b.Price,
+                    a.Quantity,
+                    Total = a.Quantity * b.Price
+                }).ToList();
+            return Ok(new {order, orderItems});
         }
 
         // PUT: api/Order/5
