@@ -1,1 +1,19 @@
-<p>order works!</p>
+<table class="table table-hover">
+  <thead class="thead-light">
+  <th>#Order No.</th>
+  <th>Customer</th>
+  <th>P Method</th>
+  <th>G Total</th>
+  <th></th>
+  </thead>
+  <tbody>
+  <tr *ngFor="let item of service.ordersList">
+    <th>{{ item.orderNo }}</th>
+    <td>{{ item.customer }}</td>
+    <td>{{ item.pMethod }}</td>
+    <td>{{ item.gTotal }}</td>
+    <td></td>
+
+  </tr>
+  </tbody>
+</table>

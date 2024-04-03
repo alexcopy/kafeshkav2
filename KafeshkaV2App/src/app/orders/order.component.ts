@@ -17,7 +17,7 @@ import {Router} from "@angular/router";
     NgIf,
     NgForOf
   ],
-  templateUrl: './orders.component.html',
+  templateUrl: './order.component.html',
   styles: ``
 })
 export class OrderComponent implements OnInit {

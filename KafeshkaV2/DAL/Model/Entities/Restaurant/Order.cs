@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
-    namespace KafeshkaV2.DAL.Model;
+
+namespace KafeshkaV2.DAL.Model;
 
     [Table("Orders")]
     public class Order
@@ -10,7 +10,8 @@ using System.Text.Json.Serialization;
         [Key]
         public long OrderId { get; set; }
 
-        public ulong OrderNo { get; set; }
+
+        public long OrderNo { get; set; }
 
         [Column(TypeName = "nvarchar(100)")]
         public string PMethod { get; set; }

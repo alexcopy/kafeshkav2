@@ -18,9 +18,19 @@ namespace KafeshkaV2.Controllers.Restaurant
 
         // GET: api/Order
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
+        public System.Object GetOrders()
         {
-            return await _context.Orders.ToListAsync();
+            var result = (from a in _context.Orders
+                join b in _context.Customers on a.CustomerId equals b.CustomerId
+                select new
+                {
+                    a.OrderId,
+                    a.OrderNo,
+                    Customer = b.Name,
+                    a.PMethod,
+                    a.GTotal
+                }).ToList();
+            return result;
         }
 
         // GET: api/Order/5

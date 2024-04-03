@@ -1,13 +1,22 @@
 import {Component, OnInit} from '@angular/core';
+import {OrderService} from "../../shared/order.service";
+import {NgForOf} from "@angular/common";
 
 
 @Component({
   selector: 'app-order',
   standalone: true,
-  imports: [],
-  templateUrl: './order.component.html',
+  imports: [
+    NgForOf
+  ],
+  templateUrl: './orders.component.html',
   styles: ``
 })
-export class OrdersComponent {
+export class OrdersComponent implements OnInit{
 
+  constructor(protected service: OrderService) {
+  }
+  ngOnInit(): void {
+    this.service.getOrdersList();
+  }
 }
