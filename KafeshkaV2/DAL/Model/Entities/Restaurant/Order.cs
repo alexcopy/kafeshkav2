@@ -22,6 +22,9 @@ namespace KafeshkaV2.DAL.Model;
         [ForeignKey("CustomerId")]
         public long CustomerId { get; set; }
 
+        [NotMapped]
+        public string DeletedOrderItemIds { get; set; }
+
 
         // // Navigation property representing the collection of OrderItems for this order
         public  ICollection<OrderItems> OrderItems { get; set; }

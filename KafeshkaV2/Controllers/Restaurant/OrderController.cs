@@ -29,7 +29,8 @@ namespace KafeshkaV2.Controllers.Restaurant
                     a.OrderNo,
                     Customer = b.Name,
                     a.PMethod,
-                    a.GTotal
+                    a.GTotal,
+                    DeletedOrderItemIds=""
                 }).ToList();
             return result;
         }
@@ -46,7 +47,8 @@ namespace KafeshkaV2.Controllers.Restaurant
                     a.OrderNo,
                     a.PMethod,
                     a.CustomerId,
-                    a.GTotal
+                    a.GTotal,
+                    DeletedOrderItemIds=""
                 }).FirstOrDefault();
             var orderItems = (from a in _context.OrderItems
                 join b in _context.Items on a.ItemId equals b.ItemId
@@ -61,7 +63,7 @@ namespace KafeshkaV2.Controllers.Restaurant
                     a.Quantity,
                     Total = a.Quantity * b.Price
                 }).ToList();
-            return Ok(new {order, orderItems});
+            return Ok(new { order, orderItems });
         }
 
         // POST: api/Order
@@ -71,7 +73,31 @@ namespace KafeshkaV2.Controllers.Restaurant
         {
             try
             {
-                _context.Orders.Add(order);
+                if (order.OrderId == 0)
+                {
+                    _context.Orders.Add(order);
+                }
+                else
+                {
+                    _context.Entry(order).State = EntityState.Modified;
+                }
+
+// Order Items table
+                foreach (var item in order.OrderItems)
+                {
+                    if (item.OrderItemId == 0)
+                        _context.OrderItems.Add(item);
+                    else
+                        _context.Entry(item).State = EntityState.Modified;
+                }
+
+// Delete operation for Order Items
+                foreach (var itemId in order.DeletedOrderItemIds.Split(",").Where(x => x != ""))
+                {
+                    var x = _context.OrderItems.Find(Convert.ToInt64(itemId));
+                    _context.OrderItems.Remove(x);
+                }
+
                 await _context.SaveChangesAsync();
                 // Return a 201 Created status code along with the created order
                 return Ok();
