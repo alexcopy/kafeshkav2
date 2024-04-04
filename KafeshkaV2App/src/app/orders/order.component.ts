@@ -74,7 +74,7 @@ export class OrderComponent implements OnInit {
 
   updateGrandTotal() {
     this.service.formData.gTotal = this.service.orderItems.reduce((prev, curr) => {
-      return prev + curr.Total;
+      return prev + curr.total;
     }, 0);
     this.service.formData.gTotal = parseFloat((this.service.formData.gTotal).toFixed(2));
   }

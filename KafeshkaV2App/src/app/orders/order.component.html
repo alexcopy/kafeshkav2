@@ -8,7 +8,7 @@
           <div class="input-group-prepend">
             <div class="input-group-text">#</div>
           </div>
-          <input name="OrderNo" #OrderNo="ngModel" [(ngModel)]="service.formData.orderNo" class="form-control"/>
+          <input name="orderNo" #orderNo="ngModel" [(ngModel)]="service.formData.orderNo" class="form-control"/>
         </div>
       </div>
     </div>
@@ -28,7 +28,7 @@
     <div class="col-6 col-md-5 pt-3">
       <div class="form-group">
         <label>Payment Method</label>
-        <select name="PMethod" #PMethod="ngModel" [(ngModel)]="service.formData.pMethod" class="form-control">
+        <select name="pMethod" #pMethod="ngModel" [(ngModel)]="service.formData.pMethod" class="form-control">
           <option value="Card">Card</option>
           <option value="Cash">Cash</option>
         </select>
@@ -41,7 +41,7 @@
           <div class="input-group-prepend">
             <div class="input-group-text">£</div>
           </div>
-          <input name="GTotal" #GTotal="ngModel" [(ngModel)]="service.formData.gTotal" class="form-control" readonly/>
+          <input name="gTotal" #gTotal="ngModel" [(ngModel)]="service.formData.gTotal" class="form-control" readonly/>
         </div>
       </div>
     </div>
@@ -68,14 +68,14 @@
       </td>
     </tr>
     <tr *ngFor="let item of service.orderItems; let i = index;">
-      <td>{{ item.ItemName }}</td>
-      <td>{{ item.Price }}</td>
-      <td>{{ item.Quantity }}</td>
-      <td>{{ item.Total }}</td>
+      <td>{{ item.itemName }}</td>
+      <td>{{ item.price }}</td>
+      <td>{{ item.quantity }}</td>
+      <td>{{ item.total }}</td>
       <td>
         <a (click)="AddOrEditOrderItem(i, service.formData.orderNo)" class="btn btn-sm btn-info text-white"><i
           class="fa fa-pencil"></i> </a>
-        <a (click)="onDeleteOrderItem(item.OrderItemId,   i)" class="btn btn-sm btn-danger text-white m-lg-1"><i
+        <a (click)="onDeleteOrderItem(item.orderItemId,   i)" class="btn btn-sm btn-danger text-white m-lg-1"><i
           class="fa fa-trash"></i> </a>
       </td>
     </tr>
