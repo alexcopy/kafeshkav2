@@ -27,6 +27,8 @@ public class RestaurantDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Add any additional configuration or relationships here if needed
+        modelBuilder.Entity<Order>()
+            .HasIndex(o => o.OrderNo)
+            .IsUnique();
     }
 }

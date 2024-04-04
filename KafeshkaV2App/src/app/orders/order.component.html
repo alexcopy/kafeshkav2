@@ -1,4 +1,6 @@
-<form #form="ngForm" autocomplete="off" *ngIf="service.formData">
+<form #form="ngForm" autocomplete="off"
+      *ngIf="service.formData" (submit)="onSubmit(form)">
+  <input type="hidden" name="orderId" #orderId="ngModel" [(ngModel)]="service.formData.orderId" >
   <div class="row">
     <div class="col-6 col-md-5 pt-3">
       <div class="form-group">
@@ -7,16 +9,18 @@
           <div class="input-group-prepend">
             <div class="input-group-text">#</div>
           </div>
-          <input name="OrderNo" #OrderNo="ngModel" [(ngModel)]="service.formData.OrderNo" class="form-control"/>
+          <input name="orderNo" #orderNo="ngModel" [(ngModel)]="service.formData.orderNo" class="form-control"/>
         </div>
       </div>
     </div>
     <div class="col-6 col-md-5 pt-3">
       <div class="form-group">
         <label>Customer</label>
-        <select name="CustomerId" #CustomerId="ngModel" [(ngModel)]="service.formData.CustomerId"
-                class="form-control">
+        <select name="customerId" #customerId="ngModel" [(ngModel)]="service.formData.customerId"
+                class="form-control" [class.is-invalid]="!isValid && service.formData.customerId==0">
           <option value="0">--SELECT--</option>
+          <option *ngFor="let item of customerService.customersList" value="{{item.customerId}}">{{ item.name }}
+          </option>
         </select>
       </div>
     </div>
@@ -25,10 +29,9 @@
     <div class="col-6 col-md-5 pt-3">
       <div class="form-group">
         <label>Payment Method</label>
-        <select name="PMethod" #PMethod="ngModel" [(ngModel)]="service.formData.PMethod" class="form-control">
-          <option value="">-SELECT-</option>
-          <option value="Cash">Cash</option>
+        <select name="pMethod" #pMethod="ngModel" [(ngModel)]="service.formData.pMethod" class="form-control">
           <option value="Card">Card</option>
+          <option value="Cash">Cash</option>
         </select>
       </div>
     </div>
@@ -39,7 +42,7 @@
           <div class="input-group-prepend">
             <div class="input-group-text">£</div>
           </div>
-          <input name="GTotal" #GTotal="ngModel" [(ngModel)]="service.formData.GTotal" class="form-control" readonly/>
+          <input name="gTotal" #gTotal="ngModel" [(ngModel)]="service.formData.gTotal" class="form-control" readonly/>
         </div>
       </div>
     </div>
@@ -55,25 +58,25 @@
     <th>Quantity</th>
     <th>Total</th>
     <th>
-      <a (click)="AddOrEditOrderItem(null, service.formData.OrderNo)"  class="btn btn-sm btn-success"><i
+      <a (click)="AddOrEditOrderItem(null, service.formData.orderNo)" class="btn btn-sm btn-success"><i
         class="fa fa-plus"></i>Add Item</a>
     </th>
     </thead>
     <tbody>
     <tr *ngIf="service.orderItems.length==0">
       <td class="font-italic text-center" colspan="5">
-        No food selected for this order
+        <p [class.text-danger]="!isValid">No food selected for this order</p>
       </td>
     </tr>
     <tr *ngFor="let item of service.orderItems; let i = index;">
-      <td>{{ item.ItemName }}</td>
-      <td>{{ item.Price }}</td>
-      <td>{{ item.Quantity }}</td>
-      <td>{{ item.Total }}</td>
+      <td>{{ item.itemName }}</td>
+      <td>{{ item.price }}</td>
+      <td>{{ item.quantity }}</td>
+      <td>{{ item.total }}</td>
       <td>
-        <a (click)="AddOrEditOrderItem(i, service.formData.OrderNo)"  class="btn btn-sm btn-info text-white"><i
+        <a (click)="AddOrEditOrderItem(i, service.formData.orderNo)" class="btn btn-sm btn-info text-white"><i
           class="fa fa-pencil"></i> </a>
-        <a (click)="onDeleteOrderItem(item.OrderItemId,   i)"  class="btn btn-sm btn-danger text-white m-lg-1"><i
+        <a (click)="onDeleteOrderItem(item.orderItemId,   i)" class="btn btn-sm btn-danger text-white m-lg-1"><i
           class="fa fa-trash"></i> </a>
       </td>
     </tr>
@@ -82,5 +85,7 @@
   <div class="form-group">
     <br/>
     <button type="submit" class="btn btn-dark"><i class="fa fa-database"></i>Submit</button>
+    <a href="" class="btn btn-outline-dark m-lg-1" routerLink="/orders"><i class="fa fa-table"></i> View Orders</a>
+
   </div>
 </form>

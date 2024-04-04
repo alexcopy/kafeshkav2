@@ -5,7 +5,7 @@ import {FormsModule, NgForm} from "@angular/forms";
 import {ItemService} from "../../shared/item.service";
 import {NgForOf} from "@angular/common";
 import {OrderService} from "../../shared/order.service";
-import {OrdersComponent} from "../orders.component";
+import {OrderComponent} from "../order.component";
 
 @Component({
   selector: 'app-order-items',
@@ -36,13 +36,13 @@ export class OrderItemsComponent implements OnInit {
     console.log(this.data);
     if (this.data.orderItemIndex == null) {
       this.formData = {
-        OrderItemId: 0,
-        ItemName: '',
-        OrderId: this.data.OrderId,
-        ItemId: 0,
-        Price: 0,
-        Quantity: 1,
-        Total: 0
+        orderItemId: 0,
+        itemName: '',
+        orderId: this.data.OrderId,
+        itemId: 0,
+        price: 0,
+        quantity: 1,
+        total: 0
       }
     } else {
       this.formData = Object.assign({}, this.orderService.orderItems[this.data.orderItemIndex]);
@@ -52,18 +52,18 @@ export class OrderItemsComponent implements OnInit {
   updatePrice(event: Event) {
     const selectElement = event.target as HTMLSelectElement;
     if (!selectElement) {
-      this.formData.Price = 0;
-      this.formData.ItemName = "";
+      this.formData.price = 0;
+      this.formData.itemName = "";
     } else {
       const selectedIndex = selectElement.selectedIndex;
-      this.formData.Price = this.itemService.itemsList[selectedIndex - 1].price;
-      this.formData.ItemName = this.itemService.itemsList[selectedIndex - 1].name;
+      this.formData.price = this.itemService.itemsList[selectedIndex - 1].price;
+      this.formData.itemName = this.itemService.itemsList[selectedIndex - 1].name;
       this.updateTotal();
     }
   }
 
   updateTotal() {
-    this.formData.Total = parseFloat((this.formData.Price * this.formData.Quantity).toFixed(2));
+    this.formData.total = parseFloat((this.formData.price * this.formData.quantity).toFixed(2));
   }
 
   onSubmit(form: NgForm) {
@@ -79,9 +79,9 @@ export class OrderItemsComponent implements OnInit {
 
   validateForm(formData: OrderItem) {
     this.isValid = true;
-    if (formData.ItemId == 0)
+    if (formData.itemId == 0)
       this.isValid = false;
-    else if (formData.Quantity == 0)
+    else if (formData.quantity == 0)
       this.isValid = false;
     return this.isValid;
   }
