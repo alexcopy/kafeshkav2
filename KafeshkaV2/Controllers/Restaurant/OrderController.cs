@@ -48,6 +48,7 @@ namespace KafeshkaV2.Controllers.Restaurant
                     a.PMethod,
                     a.CustomerId,
                     a.GTotal,
+                    Customer="",
                     DeletedOrderItemIds=""
                 }).FirstOrDefault();
             var orderItems = (from a in _context.OrderItems
