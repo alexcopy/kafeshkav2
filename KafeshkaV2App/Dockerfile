@@ -1,26 +1,32 @@
-# Use an official Node.js runtime as a base image
+# Stage 1: Build Angular application
 FROM node:21-alpine as builder
 
-# Set the working directory inside the container
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json files
+# Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy the rest of the application code
+# Copy the entire project directory to the working directory
 COPY . .
 
-# Build the Angular app for production
-RUN npm run build -- --prod
+# Build the Angular application (assuming you're using Angular)
+RUN npm run build --prod
 
-# Use a lightweight base image for the final stage
-FROM nginx:alpine
+# Stage 2: Serve Angular application with NGINX
+FROM nginx:1.19-alpine
 
-# Copy the built Angular app from the previous stage into the NGINX server's public directory
-COPY --from=builder /app/dist/angular-app /usr/share/nginx/html
+# Remove default NGINX website
+RUN rm -rf /usr/share/nginx/html/*
 
-# Expose port 80
+# Copy the built Angular application from the previous stage to NGINX's default public directory
+COPY --from=builder /app/dist/kafeshka-v2-app/browser /usr/share/nginx/html
+
+# Expose port 80 to the outside world
 EXPOSE 80
+
+# Start NGINX server when the container starts
+CMD ["nginx", "-g", "daemon off;"]

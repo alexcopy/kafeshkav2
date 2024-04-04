@@ -31,6 +31,14 @@ services:
       kaf_net:
         ipv4_address: 168.0.0.14
 
+  kafeshkav2fe:
+    image: redcopy/kafeshkav2fe:latest  # Assuming kafeshkav2fe is the image name for the front-end
+    ports:
+      - "8282:80"  # Expose port 80 to access the front-end
+    networks:
+      kaf_net:
+        ipv4_address: 168.0.0.16
+
 networks:
   kaf_net:
     driver: bridge
