@@ -19,7 +19,7 @@ export class OrderService {
     deletedOrderItemIds: ''
   };
   orderItems: OrderItem[] = [];
-  ordersList: Order[]=[];
+  ordersList: Order[] = [];
   url = environment.apiBaseUrl + "/Order";
 
   constructor(private http: HttpClient) {
@@ -30,9 +30,10 @@ export class OrderService {
       ...this.formData,
       OrderItems: this.orderItems
     };
-
     return this.http.post(this.url, body);
   }
+
+
 
 
   getOrdersList() {
@@ -45,7 +46,8 @@ export class OrderService {
       }
     });
   }
-  getOrderById(id:number) {
+
+  getOrderById(id: number) {
     this.http.get<{ order: Order, orderItems: OrderItem[] }>(this.url + "/" + id).subscribe({
       next: (res: { order: Order, orderItems: OrderItem[] }) => {
         this.formData = res.order;
