@@ -83,7 +83,7 @@ namespace KafeshkaV2.Controllers.Restaurant
                     _context.Entry(order).State = EntityState.Modified;
                 }
 
-// Order Items table
+                // Order Items table
                 foreach (var item in order.OrderItems)
                 {
                     if (item.OrderItemId == 0)
@@ -92,7 +92,7 @@ namespace KafeshkaV2.Controllers.Restaurant
                         _context.Entry(item).State = EntityState.Modified;
                 }
 
-// Delete operation for Order Items
+                // Delete operation for Order Items
                 foreach (var itemId in order.DeletedOrderItemIds.Split(",").Where(x => x != ""))
                 {
                     var x = _context.OrderItems.Find(Convert.ToInt64(itemId));
@@ -116,12 +116,13 @@ namespace KafeshkaV2.Controllers.Restaurant
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrder(long id)
         {
-            var order = await _context.Orders.FindAsync(id);
-            if (order == null)
-            {
-                return NotFound();
-            }
+            var order = _context.Orders.Include(y=>y.OrderItems).
+                SingleOrDefault(x => x.OrderId == id);
 
+            foreach (var item in order.OrderItems.ToList())
+            {
+                _context.OrderItems.Remove(item);
+            }
             _context.Orders.Remove(order);
             await _context.SaveChangesAsync();
 

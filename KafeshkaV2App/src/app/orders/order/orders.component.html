@@ -12,7 +12,9 @@
     <td (click)="openForEdit(item.orderId)">{{ item.customer }}</td>
     <td (click)="openForEdit(item.orderId)">{{ item.pMethod }}</td>
     <td (click)="openForEdit(item.orderId)">{{ item.gTotal }}</td>
-    <td></td>
+    <td>
+      <a class="btn text-danger" (click)="onOrderDelete(item.orderId)"><i class="fa fa-trash fa-lg"></i></a>
+    </td>
 
   </tr>
   </tbody>

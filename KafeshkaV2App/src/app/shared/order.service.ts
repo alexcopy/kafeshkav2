@@ -4,6 +4,7 @@ import {OrderItem} from "./order-item.model";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Customer} from "./customer.model";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,10 @@ export class OrderService {
   }
 
 
+  deleteOrder(orderId: number): Observable<void> {
+    const deleteUrl = `${this.url}/${orderId}`;
+    return this.http.delete<void>(deleteUrl);
+  }
 
 
   getOrdersList() {
