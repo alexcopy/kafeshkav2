@@ -1,3 +1,3 @@
 export const environment = {
-  apiBaseUrl: "http://localhost:8080/api",
+  apiBaseUrl: "http://kafeshka.loc:8080/api",
 };

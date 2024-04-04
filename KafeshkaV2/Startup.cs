@@ -101,7 +101,7 @@ public class Startup
         app.UseSpaStaticFiles();
         app.UseRouting();
         app.UseAuthorization();
-        app.UseCors(options => options.WithOrigins("http://localhost").AllowAnyMethod().AllowAnyHeader());
+        app.UseCors(options => options.WithOrigins("http://168.0.0.14").AllowAnyMethod().AllowAnyHeader());
 
         app.UseEndpoints(endpoints =>
         {
