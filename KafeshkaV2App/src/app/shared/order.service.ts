@@ -9,7 +9,7 @@ import {Customer} from "./customer.model";
   providedIn: 'root'
 })
 export class OrderService {
-  formData: { orderNo: number; orderId: number; pMethod: string; customerId: number; gTotal: number } = new Order();
+  formData: { orderNo: number; orderId: number; pMethod: string; customerId: number; gTotal: number; deletedOrderItemIds: string} = new Order();
   orderItems: OrderItem[] = [];
   ordersList: Order[]=[];
   url = environment.apiBaseUrl + "/Order";

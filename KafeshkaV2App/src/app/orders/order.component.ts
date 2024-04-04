@@ -36,10 +36,10 @@ export class OrderComponent implements OnInit {
     let orderId = this.currentRoute.snapshot.paramMap.get("id");
     if (orderId == null)
       this.resetForm();
-    else{
+    else {
       this.service.getOrderById(parseInt(orderId));
     }
-      this.customerService.getClientsList();
+    this.customerService.getClientsList();
   }
 
   resetForm(form?: NgForm) {
@@ -51,7 +51,8 @@ export class OrderComponent implements OnInit {
       orderNo: Math.floor(100000 * Math.random() * 900000),
       customerId: 0,
       pMethod: "",
-      gTotal: 0
+      gTotal: 0,
+      deletedOrderItemIds: ""
     }
     this.service.orderItems = [];
   }
@@ -68,6 +69,9 @@ export class OrderComponent implements OnInit {
   }
 
   onDeleteOrderItem(OrderItemId: number, i: number) {
+    if (OrderItemId != null) {
+      this.service.formData.deletedOrderItemIds += OrderItemId + ",";
+    }
     this.service.orderItems.splice(i, 1);
     this.updateGrandTotal();
   }

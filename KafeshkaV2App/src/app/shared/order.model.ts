@@ -5,5 +5,6 @@ export class Order {
   customerId: number = 0;
   pMethod: string = "";
   gTotal: number = 0;
+  deletedOrderItemIds: string = ""
 
 }
