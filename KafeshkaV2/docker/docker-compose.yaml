@@ -12,12 +12,15 @@ services:
     ports:
       - "3386:3306"
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+    volumes:
+      - mysql_data:/var/lib/mysql
     networks:
       kaf_net:
         ipv4_address: 168.0.0.15
 
   app:
-    image: redcopy/kafeshkav2:latest
+    image:  kafeshkav2:latest
     depends_on:
       kafeshkav2-db:
         condition: service_started
@@ -40,6 +43,9 @@ services:
     networks:
       kaf_net:
         ipv4_address: 168.0.0.16
+volumes:
+  mysql_data:
+    driver: local
 
 networks:
   kaf_net:

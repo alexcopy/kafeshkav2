@@ -211,7 +211,32 @@ CREATE TABLE `AspNetUsers` (
 
 LOCK TABLES `AspNetUsers` WRITE;
 /*!40000 ALTER TABLE `AspNetUsers` DISABLE KEYS */;
+INSERT INTO `AspNetUsers` VALUES ('23d61321-f8b4-4fb6-b000-910c2817a845','alex.redko@yahoo.co.uk','Alex','Red','ALEX.REDKO@YAHOO.CO.UK','alex.redko@yahoo.co.uk','ALEX.REDKO@YAHOO.CO.UK',0,'AQAAAAIAAYagAAAAEDw84hi601g+QgdzajnwkJWVAkw2XshKuEQRydSQUbNUPSlwiGxu5OGxE45IT/P/Kw==','3BVD4WT6B7THD4AOZ2SDS7QWNGXH7SOW','2c001174-60b1-492e-a03b-c8198ee4aed5',NULL,0,0,NULL,1,0);
 /*!40000 ALTER TABLE `AspNetUsers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Customer`
+--
+
+DROP TABLE IF EXISTS `Customer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Customer` (
+  `CustomerId` bigint NOT NULL AUTO_INCREMENT,
+  `Name` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  PRIMARY KEY (`CustomerId`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Customer`
+--
+
+LOCK TABLES `Customer` WRITE;
+/*!40000 ALTER TABLE `Customer` DISABLE KEYS */;
+INSERT INTO `Customer` VALUES (1,'John Smith'),(2,'Alice Johnson'),(3,'Michael Brown'),(4,'Emma Garcia'),(5,'William Martinez'),(6,'Olivia Robinson'),(7,'James Clark'),(8,'Sophia Rodriguez'),(9,'Benjamin Lewis'),(10,'Isabella Lee'),(12,'John Smith'),(13,'John Smith');
+/*!40000 ALTER TABLE `Customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -303,6 +328,91 @@ LOCK TABLES `Ingredients` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `Item`
+--
+
+DROP TABLE IF EXISTS `Item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Item` (
+  `ItemId` int NOT NULL AUTO_INCREMENT,
+  `Name` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `Price` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`ItemId`)
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Item`
+--
+
+LOCK TABLES `Item` WRITE;
+/*!40000 ALTER TABLE `Item` DISABLE KEYS */;
+INSERT INTO `Item` VALUES (1,'Pizza',10.99),(2,'Burger',20.50),(3,'Sushi',15.75),(4,'Taco',8.49),(5,'Pasta',12.99),(6,'Salad',18.25),(7,'Sandwich',6.99),(8,'Steak',22.75),(9,'Soup',9.99),(10,'Fries',14.50),(11,'Chicken',16.75),(12,'Rice Bowl',11.49),(13,'Burrito',19.99),(14,'Noodles',7.50),(15,'Random Food 15',13.75),(16,'Lasagna',17.99),(17,'Donut',23.50),(18,'Ice Cream',8.75),(19,'Wings',10.49),(20,'Sushi Roll',21.99),(21,'Taco',8.49),(22,'Taco',8.49);
+/*!40000 ALTER TABLE `Item` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `OrderItems`
+--
+
+DROP TABLE IF EXISTS `OrderItems`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `OrderItems` (
+  `OrderItemId` bigint NOT NULL AUTO_INCREMENT,
+  `OrderId` bigint NOT NULL,
+  `ItemId` int NOT NULL,
+  `Quantity` bigint NOT NULL,
+  PRIMARY KEY (`OrderItemId`),
+  KEY `IX_OrderItems_ItemId` (`ItemId`),
+  KEY `IX_OrderItems_OrderId` (`OrderId`),
+  CONSTRAINT `FK_OrderItems_Item_ItemId` FOREIGN KEY (`ItemId`) REFERENCES `Item` (`ItemId`) ON DELETE CASCADE,
+  CONSTRAINT `FK_OrderItems_Orders_OrderId` FOREIGN KEY (`OrderId`) REFERENCES `Orders` (`OrderId`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `OrderItems`
+--
+
+LOCK TABLES `OrderItems` WRITE;
+/*!40000 ALTER TABLE `OrderItems` DISABLE KEYS */;
+INSERT INTO `OrderItems` VALUES (21,23,7,1),(22,24,7,1),(23,24,6,1),(24,24,19,1),(25,25,16,12),(26,25,12,10),(28,27,4,1),(32,27,7,1),(33,30,5,10),(34,30,17,1),(35,30,2,1),(36,31,9,1),(37,31,11,1),(38,32,14,1);
+/*!40000 ALTER TABLE `OrderItems` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Orders`
+--
+
+DROP TABLE IF EXISTS `Orders`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Orders` (
+  `OrderId` bigint NOT NULL AUTO_INCREMENT,
+  `OrderNo` bigint NOT NULL,
+  `CustomerId` bigint NOT NULL,
+  `PMethod` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `GTotal` decimal(18,2) NOT NULL,
+  PRIMARY KEY (`OrderId`),
+  UNIQUE KEY `UC_OrderNo` (`OrderNo`),
+  KEY `IX_Orders_CustomerId` (`CustomerId`),
+  CONSTRAINT `FK_Orders_Customer_CustomerId` FOREIGN KEY (`CustomerId`) REFERENCES `Customer` (`CustomerId`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Orders`
+--
+
+LOCK TABLES `Orders` WRITE;
+/*!40000 ALTER TABLE `Orders` DISABLE KEYS */;
+INSERT INTO `Orders` VALUES (23,26815744240,2,'Card',6.99),(24,39299543890,2,'Card',35.73),(25,74681372556,10,'Card',330.78),(27,13454595731,3,'Card',15.48),(30,18049385292,1,'Cash',173.90),(31,19611387663,9,'Cash',26.74),(32,6302207429,7,'Cash',7.50);
+/*!40000 ALTER TABLE `Orders` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `PaymentDetail`
 --
 
@@ -316,7 +426,7 @@ CREATE TABLE `PaymentDetail` (
   `ExpirationDate` varchar(5) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `SecurityCode` varchar(3) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   PRIMARY KEY (`PaymentDetailId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -325,6 +435,7 @@ CREATE TABLE `PaymentDetail` (
 
 LOCK TABLES `PaymentDetail` WRITE;
 /*!40000 ALTER TABLE `PaymentDetail` DISABLE KEYS */;
+INSERT INTO `PaymentDetail` VALUES (1,'sadsdas','1234567890123451','23/12','123');
 /*!40000 ALTER TABLE `PaymentDetail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -375,7 +486,7 @@ CREATE TABLE `__EFMigrationsHistory` (
 
 LOCK TABLES `__EFMigrationsHistory` WRITE;
 /*!40000 ALTER TABLE `__EFMigrationsHistory` DISABLE KEYS */;
-INSERT INTO `__EFMigrationsHistory` VALUES ('20240227232336_InitialCreate','8.0.3'),('20240228124320_AddDishIngredient','8.0.3'),('20240315173207_Payment','8.0.3'),('20240321160531_InitialIdentity','8.0.3');
+INSERT INTO `__EFMigrationsHistory` VALUES ('20240227232336_InitialCreate','8.0.3'),('20240228124320_AddDishIngredient','8.0.3'),('20240315173207_Payment','8.0.3'),('20240321160531_InitialIdentity','8.0.3'),('20240326140211_Restaurant','8.0.3'),('20240330235638_OrdersRename','8.0.3');
 /*!40000 ALTER TABLE `__EFMigrationsHistory` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -388,4 +499,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-22 15:24:58
+-- Dump completed on 2024-04-05 21:18:41

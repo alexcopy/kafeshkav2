@@ -1,16 +1,19 @@
 # Stage 1: Build Angular application
-FROM node:21-alpine as builder
+FROM node:20-alpine as builder
 
-# Set the working directory in the container
+# Install Angular CLI globally
+RUN npm install -g @angular/cli
+
+# Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json to the working directory
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy the entire project directory to the working directory
+# Copy the rest of the application code
 COPY . .
 
 # Build the Angular application (assuming you're using Angular)
@@ -24,7 +27,7 @@ RUN rm -rf /usr/share/nginx/html/*
 
 # Copy the built Angular application from the previous stage to NGINX's default public directory
 COPY --from=builder /app/dist/kafeshka-v2-app/browser /usr/share/nginx/html
-
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Expose port 80 to the outside world
 EXPOSE 80
 

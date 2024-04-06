@@ -1,0 +1,23 @@
+# Stage 1: Build Angular application
+FROM node:20-alpine as builder
+
+# Install Angular CLI globally
+RUN npm install -g @angular/cli
+
+# Set the working directory
+WORKDIR /app
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code
+COPY . .
+
+# Expose port 4200 (default port for Angular CLI development server)
+EXPOSE 4200
+
+# Command to start Angular CLI development server
+CMD ["ng", "serve", "--host", "0.0.0.0", "--port", "4200", "--disable-host-check"]
