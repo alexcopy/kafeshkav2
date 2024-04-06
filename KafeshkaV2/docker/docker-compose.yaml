@@ -10,39 +10,53 @@ services:
       MYSQL_USER: kafeshka
       MYSQL_PASSWORD: test123
     ports:
-      - "3386:3306"
+      - "3306:3306"  # MySQL port
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
       kaf_net:
         ipv4_address: 168.0.0.15
 
-  app:
-    image:  kafeshkav2:latest
-    depends_on:
-      kafeshkav2-db:
-        condition: service_started
-    extra_hosts:
-      - kafeshka_db.loc:168.0.0.15
-    environment:
-         ASPNETCORE_ENVIRONMENT: Production
+  traefik:
+    image: traefik:v3.0
+    command:
+      - "--api.insecure=true"  # Enable insecure API (for demo purposes)
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
     ports:
-      - "8088:8080"
+      - "80:80"   # HTTP
+      - "8181:8080"  # Traefik Dashboard
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
     networks:
-      kaf_net:
-        ipv4_address: 168.0.0.14
+      - kaf_net
+
+  app:
+    image: kafeshkav2:latest
+    depends_on:
+      - kafeshkav2-db
+    extra_hosts:
+      - "kafeshka_db.loc:168.0.0.15"  # Adjusted to match the container IP
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+    ports:
+      - "8088:8080"  # Adjusted port mapping
+    networks:
+      - kaf_net
 
   kafeshkav2fe:
     image: kafeshkav2fe:latest
     extra_hosts:
-      - kafeshka.loc:168.0.0.14
+      - "kafeshka.loc:168.0.0.15"  # Adjusted to match the container IP
     ports:
       - "8282:80"  # Expose port 80 to access the front-end
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.angular.rule=Host(`yourdomain.com`)"  # Adjusted hostname
     networks:
-      kaf_net:
-        ipv4_address: 168.0.0.16
+      - kaf_net
+
 volumes:
   mysql_data:
     driver: local
@@ -55,5 +69,5 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 168.0.0.0/15
+        - subnet: 168.0.0.0/24  # Adjusted subnet size and gateway
           gateway: 168.0.0.1
